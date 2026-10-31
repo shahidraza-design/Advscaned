@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Generated app data (leads, calls, settings, knowledge) — this is runtime state,
+# not source. Keep the folder so a fresh clone can start immediately.
+telecaller/data/*.json
+telecaller/data/*.tmp
+!telecaller/data/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

@@ -1,0 +1,10 @@
+# Telecaller voice agent — everything here is free and open source.
+# The agent runs with no API keys and no model downloads.
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9
+
+# Optional extras (uncomment as needed):
+#   piper-tts            # offline neural voices (or use espeak-ng from apt)
+#   faster-whisper       # offline ASR for phone audio
+#   httpx                # async LLM calls if you outgrow the stdlib client

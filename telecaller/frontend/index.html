@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Advscaned · Telecaller Voice Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div>
+        <div class="brand-name">Advscaned</div>
+        <div class="brand-sub">Voice Agent</div>
+      </div>
+    </div>
+
+    <nav id="nav">
+      <button class="nav-item active" data-view="call"><span>◉</span> Live call</button>
+      <button class="nav-item" data-view="leads"><span>☰</span> Leads</button>
+      <button class="nav-item" data-view="dashboard"><span>▤</span> Dashboard</button>
+      <button class="nav-item" data-view="knowledge"><span>✎</span> Knowledge</button>
+      <button class="nav-item" data-view="settings"><span>⚙</span> Settings</button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="engine-badge">
+        <span class="dot"></span>
+        <div>
+          <b id="engine-name">Local engine</b>
+          <small id="engine-sub">zero cost · no API key</small>
+        </div>
+      </div>
+      <div class="tiny">English · हिन्दी · বাংলা</div>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <h1 id="view-title">Live call</h1>
+        <p id="view-sub">Browser calling — free, no telephony bill.</p>
+      </div>
+      <div class="topbar-actions">
+        <label class="switch">
+          <input type="checkbox" id="voice-toggle" checked />
+          <span>Speak replies</span>
+        </label>
+        <select id="voice-select" class="select" title="Voice"></select>
+        <button class="btn ghost" id="seed-btn">Load demo leads</button>
+      </div>
+    </header>
+
+    <!-- ------------------------------------------------------------ LIVE CALL -->
+    <section id="view-call" class="view">
+      <div class="call-grid">
+        <div class="card call-card">
+          <div class="call-head">
+            <div class="lead-picker">
+              <label>Lead</label>
+              <select id="lead-select" class="select wide"></select>
+            </div>
+            <div class="call-actions">
+              <button class="btn primary" id="start-btn">Start call</button>
+              <button class="btn danger" id="end-btn" disabled>End call</button>
+            </div>
+          </div>
+
+          <div class="stagebar" id="stagebar"></div>
+
+          <div class="transcript" id="transcript">
+            <div class="empty">
+              <div class="empty-ico">◉</div>
+              <h3>Ready when you are</h3>
+              <p>Pick a lead and press <b>Start call</b>. The agent opens the conversation,
+                 qualifies the lead and tries to book a demo — say anything, by voice or text.</p>
+            </div>
+          </div>
+
+          <div class="chips" id="chips"></div>
+
+          <div class="composer">
+            <button class="btn mic" id="mic-btn" title="Hold a conversation with your voice">🎙</button>
+            <input id="say-input" class="say" placeholder="Type what the lead says, e.g. “yes speaking, who is this?”" autocomplete="off" />
+            <button class="btn primary" id="send-btn" disabled>Send</button>
+          </div>
+          <div class="hint-row">
+            <span id="mic-hint">Voice input uses the browser's speech engine — no key, no cost.</span>
+            <span class="interim" id="interim"></span>
+          </div>
+        </div>
+
+        <div class="call-side">
+          <div class="card live-card">
+            <div class="card-head"><h3>Live guidance</h3><span class="pill" id="stage-pill">IDLE</span></div>
+            <p class="goal" id="goal">Start a call to see the objective for this stage.</p>
+            <div class="coach"><span>◈</span><p id="coach">Coaching tips appear here after each turn.</p></div>
+            <div class="meter-row">
+              <div class="meter">
+                <label>Intent confidence</label>
+                <div class="bar"><i id="conf-bar" style="width:0%"></i></div>
+                <small id="conf-label">—</small>
+              </div>
+              <div class="meter">
+                <label>Lead sentiment</label>
+                <div class="bar senti"><i id="senti-bar" style="width:50%"></i></div>
+                <small id="senti-label">neutral</small>
+              </div>
+            </div>
+            <div class="intent-tags" id="intent-tags"></div>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Qualification</h3><span class="count" id="slot-count">0</span></div>
+            <dl class="slots" id="slots"><dd class="muted">Nothing captured yet</dd></dl>
+          </div>
+
+          <div class="card">
+            <div class="card-head"><h3>Compliance</h3><span class="pill ok" id="dnc-pill">OK</span></div>
+            <ul class="compliance" id="compliance">
+              <li>Consent recorded before pitching</li>
+              <li>Do-Not-Call honoured immediately</li>
+              <li>Recording notice available</li>
+            </ul>
+            <div class="talk-ratio">
+              <label>Talk ratio <small>(agent : lead)</small></label>
+              <div class="bar dual"><i id="talk-agent" style="width:50%"></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------- LEADS -->
+    <section id="view-leads" class="view" hidden>
+      <div class="card">
+        <div class="card-head">
+          <h3>Calling list</h3>
+          <div class="row-actions">
+            <button class="btn ghost" id="import-btn">Import CSV</button>
+            <a class="btn ghost" href="/api/leads/export.csv">Export CSV</a>
+            <input type="file" id="csv-file" accept=".csv" hidden />
+          </div>
+        </div>
+        <form class="lead-form" id="lead-form">
+          <input name="name" placeholder="Name" required />
+          <input name="phone" placeholder="Phone (+91…)" />
+          <input name="company" placeholder="School / company" />
+          <input name="role" placeholder="Role (Principal…)" />
+          <select name="language" class="select">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="bn">বাংলা</option>
+          </select>
+          <button class="btn primary">Add lead</button>
+        </form>
+        <div class="table-wrap">
+          <table class="table" id="leads-table">
+            <thead><tr><th>Name</th><th>School</th><th>Phone</th><th>Lang</th><th>Status</th><th>Score</th><th>DNC</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- DASHBOARD -->
+    <section id="view-dashboard" class="view" hidden>
+      <div class="kpis" id="kpis"></div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-head"><h3>Recent calls</h3><a class="btn ghost" href="/api/calls/export.csv">Export</a></div>
+          <div id="recent-calls" class="list"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Outcomes</h3></div>
+          <div id="outcomes" class="bars"></div>
+          <div class="card-head" style="margin-top:22px"><h3>Languages</h3></div>
+          <div id="languages" class="bars"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------------------------------------- KNOWLEDGE -->
+    <section id="view-knowledge" class="view" hidden>
+      <div class="card">
+        <div class="card-head">
+          <h3>What the agent knows</h3>
+          <div class="row-actions">
+            <button class="btn ghost" id="kb-add">Add entry</button>
+            <button class="btn primary" id="kb-save">Save</button>
+          </div>
+        </div>
+        <p class="muted small">Retrieved by keyword match at call time — free, instant, and you control every answer. With an LLM attached, these become its facts.</p>
+        <div id="kb-list" class="kb-list"></div>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------------ SETTINGS -->
+    <section id="view-settings" class="view" hidden>
+      <form class="card settings" id="settings-form">
+        <div class="card-head"><h3>Agent &amp; offer</h3><button class="btn primary" id="save-settings">Save</button></div>
+        <div class="grid">
+          <label>Agent name<input name="agent_name" /></label>
+          <label>Company<input name="company" /></label>
+          <label>Product<input name="product" /></label>
+          <label>Demo slots (comma separated)<input name="demo_slots" /></label>
+          <label class="span2">Value proposition<textarea name="value_prop" rows="2"></textarea></label>
+          <label class="span2">Offer<textarea name="offer" rows="1"></textarea></label>
+          <label class="span2">Recording notice<textarea name="record_notice" rows="1"></textarea></label>
+        </div>
+
+        <div class="card-head" style="margin-top:26px"><h3>Optional AI brain</h3><span class="pill" id="llm-pill">OFF</span></div>
+        <p class="muted small">The call structure always stays with the deterministic engine. This only adds free-form answers and post-call notes — use a local Ollama (free) or any OpenAI-compatible endpoint.</p>
+        <div class="grid">
+          <label>Provider
+            <select name="llm_provider" class="select">
+              <option value="off">Off — fully local</option>
+              <option value="ollama">Ollama (local, free)</option>
+              <option value="openai_compatible">OpenAI-compatible</option>
+            </select>
+          </label>
+          <label>Model<input name="llm_model" placeholder="llama3.1" /></label>
+          <label class="span2">Base URL<input name="llm_base_url" placeholder="http://localhost:11434/v1" /></label>
+          <label class="span2">API key (stored server-side only)<input name="llm_api_key" type="password" placeholder="leave blank for local" /></label>
+        </div>
+
+        <div class="card-head" style="margin-top:26px"><h3>Telephony (optional)</h3></div>
+        <p class="muted small">Real phone calls: set your Twilio number's Voice webhook to <code id="hook-url">/twilio/voice</code>. Twilio's trial credit covers testing.</p>
+      </form>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

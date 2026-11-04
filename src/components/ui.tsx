@@ -101,9 +101,13 @@ export function Sheet({
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);
     document.body.style.overflow = 'hidden';
+    const scroller = document.getElementById('app-scroll');
+    const prev = scroller?.style.overflow ?? '';
+    if (scroller) scroller.style.overflow = 'hidden';
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = '';
+      if (scroller) scroller.style.overflow = prev;
     };
   }, [open, onClose]);
 

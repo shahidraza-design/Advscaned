@@ -19,6 +19,7 @@ import {
   MessageCircle,
   Sparkles,
   Star,
+  TrendingUp,
 } from 'lucide-react';
 import { TopBar } from '../components/TopBar';
 import { Avatar, Sheet, Toggle } from '../components/ui';
@@ -130,6 +131,7 @@ export default function Profile() {
         {/* Activity */}
         <Section title="Activity">
           <Row to="/myads" icon={Package} label="My ads" hint={`${mine.length} posted`} />
+          <Row to="/insights" icon={TrendingUp} label="Seller insights" hint="Views & funnel" />
           <Row to="/favorites" icon={Heart} label="Saved ads" hint={`${favorites.length} saved`} />
           <Row
             to="/saved"

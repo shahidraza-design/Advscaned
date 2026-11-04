@@ -132,6 +132,11 @@ export const SEED_ADS: Ad[] = [
     saves: 178,
     featured: true,
     status: 'active',
+    priceHistory: [
+      { price: 59000, at: now - 12 * DAY },
+      { price: 55000, at: now - 5 * DAY },
+      { price: 52000, at: now - 1 * DAY },
+    ],
     attributes: { brand: 'Apple', model: 'MacBook Air M1', warranty: 'None' },
   },
   {
@@ -153,6 +158,10 @@ export const SEED_ADS: Ad[] = [
     negotiable: true,
     delivery: true,
     status: 'active',
+    priceHistory: [
+      { price: 21000, at: now - 16 * DAY },
+      { price: 18500, at: now - 3 * DAY },
+    ],
     attributes: { type: 'Sofa', material: 'Upholstered' },
   },
   {
@@ -240,6 +249,10 @@ export const SEED_ADS: Ad[] = [
     saves: 132,
     negotiable: true,
     status: 'active',
+    priceHistory: [
+      { price: 42500, at: now - 9 * DAY },
+      { price: 38000, at: now - 2 * DAY },
+    ],
     attributes: { brand: 'Sony', model: 'PlayStation 5 Slim', warranty: 'Under 3 months' },
   },
   {

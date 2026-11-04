@@ -148,6 +148,14 @@ async function main() {
   const { errors } = await boot();
   log(true, `app booted (${text().length} chars rendered)`);
 
+  /* ------------------------------ onboarding ----------------------------- */
+  log(text().includes('Everything worth buying is nearby'), 'first-run onboarding shown');
+  await click('Next', { wait: 260 });
+  await click('Next', { wait: 260 });
+  log(text().includes('Sell in about 60 seconds'), 'onboarding slides advance');
+  await click('Skip', { wait: 300 });
+  log(!text().includes('Everything worth buying is nearby'), 'onboarding dismissed and persisted');
+
   /* ------------------------------- sign in ------------------------------- */
   await goto('/login');
   log(text().includes('Buy better'), 'login screen shown');
@@ -221,7 +229,26 @@ async function main() {
   await goto('/myads');
   log(text().includes('iPhone 12 64GB blue'), 'new ad appears in My ads');
 
+  /* ------------------------------ lower price ---------------------------- */
+  await click('Lower price', { wait: 320 });
+  log(
+    text().includes('Lower the price') && text().includes('Current price'),
+    'lower-price sheet opens',
+  );
+  await click('-10%', { wait: 200 });
+  await click('Update price', { wait: 400 });
+  log(text().includes('Price lowered') || text().includes('26,5'), 'price drop applied');
+
+  /* ------------------------------- insights ------------------------------ */
+  await goto('/insights');
+  log(text().includes('Seller insights') && text().includes('Views'), 'insights page loads');
+  log(text().includes('Buyer funnel'), 'funnel section renders');
+  log(text().includes('Ad performance'), 'per-ad performance renders');
+  await click('30 days', { wait: 300 });
+  log(text().includes('Views · last 30 days'), 'range switch re-renders chart');
+
   /* --------------------------------- boost ------------------------------- */
+  await goto('/myads');
   await click('Boost', { wait: 320 });
   log(text().includes('7-day boost'), 'boost sheet opens with price');
   await click('Activate boost', { wait: 350 });

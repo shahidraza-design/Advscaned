@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import Notifications from './pages/Notifications';
 import Login from './pages/Login';
 import SellerProfile from './pages/SellerProfile';
+import Insights from './pages/Insights';
 import NotFound from './pages/NotFound';
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -89,6 +90,14 @@ export default function App() {
             element={
               <RequireAuth>
                 <MyAds />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="insights"
+            element={
+              <RequireAuth>
+                <Insights />
               </RequireAuth>
             }
           />

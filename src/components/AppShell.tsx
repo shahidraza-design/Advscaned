@@ -21,6 +21,7 @@ import { useStore, useUI } from '../lib/store';
 import { cn, vibrate } from '../lib/utils';
 import { BottomNav } from './BottomNav';
 import { IconButton } from './TopBar';
+import { Onboarding } from './Onboarding';
 import { Avatar } from './ui';
 
 /* --------------------------------- Brand ---------------------------------- */
@@ -345,6 +346,7 @@ export function AppShell() {
         </main>
         <DesktopFooter />
       </div>
+      <Onboarding />
       <BottomNav />
       <ConnectionBanner />
       <Toaster />

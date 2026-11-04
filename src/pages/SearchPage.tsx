@@ -7,6 +7,7 @@ import {
   Camera,
   CornerDownLeft,
   MapPin,
+  Mic,
   Search,
   SlidersHorizontal,
   Sparkles,
@@ -17,7 +18,7 @@ import { TopBar } from '../components/TopBar';
 import { EmptyState, Sheet, Toggle } from '../components/ui';
 import { AREAS, CATEGORIES, categoryById } from '../lib/data';
 import { TRENDING_SEARCHES } from '../lib/seed';
-import { useStore } from '../lib/store';
+import { toast, useStore } from '../lib/store';
 import type { CategoryId, Condition, Filters } from '../lib/types';
 import { cn, inr } from '../lib/utils';
 import { rankAds } from '../lib/ai';
@@ -57,6 +58,7 @@ export default function SearchPage() {
   const [input, setInput] = useState(q);
   const [sheet, setSheet] = useState<null | 'filter' | 'sort'>(null);
   const [focused, setFocused] = useState(false);
+  const [listening, setListening] = useState(false);
   const [draft, setDraft] = useState({
     min: minPrice ?? 0,
     max: maxPrice ?? 200000,
@@ -198,6 +200,45 @@ export default function SearchPage() {
     setSaved(true);
   };
 
+  const startVoice = () => {
+    const w = window as unknown as {
+      SpeechRecognition?: new () => {
+        lang: string;
+        interimResults: boolean;
+        maxAlternatives: number;
+        onresult:
+          | ((e: { results: { [i: number]: { [j: number]: { transcript: string } } } }) => void)
+          | null;
+        onerror: (() => void) | null;
+        onend: (() => void) | null;
+        start: () => void;
+      };
+      webkitSpeechRecognition?: typeof w.SpeechRecognition;
+    };
+    const SR = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+    if (!SR) {
+      toast('Voice search needs Chrome or Safari on this device', 'info');
+      return;
+    }
+    const rec = new SR();
+    rec.lang = 'en-IN';
+    rec.interimResults = false;
+    rec.maxAlternatives = 1;
+    rec.onresult = (e) => {
+      const transcript = e.results[0][0].transcript ?? '';
+      setInput(transcript);
+      patch({ q: transcript });
+      toast(`Searching for “${transcript}”`, 'success');
+    };
+    rec.onerror = () => {
+      setListening(false);
+      toast('Did not catch that — try again', 'error');
+    };
+    rec.onend = () => setListening(false);
+    setListening(true);
+    rec.start();
+  };
+
   const catMeta = categoryById(cat);
 
   return (
@@ -255,24 +296,39 @@ export default function SearchPage() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Search in Kolkata"
-            className="input py-2.5 pl-10 pr-10 text-[14px]"
+            className="input py-2.5 pl-10 pr-[74px] text-[14px]"
             autoFocus={false}
             onFocus={() => setFocused(true)}
             onBlur={() => window.setTimeout(() => setFocused(false), 120)}
           />
-          {input && (
+          <div className="absolute right-2 top-1/2 flex -translate-y-1/2 items-center gap-1">
+            {input && (
+              <button
+                type="button"
+                aria-label="Clear search"
+                onClick={() => {
+                  setInput('');
+                  patch({ q: undefined });
+                }}
+                className="grid h-6 w-6 place-items-center rounded-full bg-ink-100 dark:bg-white/10"
+              >
+                <X size={13} />
+              </button>
+            )}
             <button
               type="button"
-              aria-label="Clear search"
-              onClick={() => {
-                setInput('');
-                patch({ q: undefined });
-              }}
-              className="absolute right-3 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-full bg-ink-100 dark:bg-white/10"
+              aria-label="Search by voice"
+              onClick={startVoice}
+              className={cn(
+                'grid h-8 w-8 place-items-center rounded-full transition',
+                listening
+                  ? 'animate-pulse bg-rose-500 text-white'
+                  : 'bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300',
+              )}
             >
-              <X size={13} />
+              <Mic size={15} />
             </button>
-          )}
+          </div>
 
           {focused && suggestions.length > 0 && (
             <div

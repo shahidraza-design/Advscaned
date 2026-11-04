@@ -1,12 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
+  ArrowDownRight,
   BarChart3,
+  ChevronRight,
   Eye,
   Heart,
-  MessageCircle,
   PackageOpen,
-  Pencil,
   Plus,
   Sparkles,
   Trash2,
@@ -32,11 +32,15 @@ export default function MyAds() {
   const updateAd = useStore((s) => s.updateAd);
   const deleteAd = useStore((s) => s.deleteAd);
   const boostAd = useStore((s) => s.boostAd);
+  const dropPrice = useStore((s) => s.dropPrice);
   const [tab, setTab] = useState<AdStatus | 'all'>('all');
   const [boostTarget, setBoostTarget] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [priceTarget, setPriceTarget] = useState<string | null>(null);
+  const [newPrice, setNewPrice] = useState('');
 
   const mine = useMemo(() => ads.filter((a) => a.sellerId === 'me'), [ads]);
+  const priceAd = mine.find((a) => a.id === priceTarget) ?? null;
   const filtered = tab === 'all' ? mine : mine.filter((a) => a.status === tab);
 
   const stats = useMemo(
@@ -55,9 +59,18 @@ export default function MyAds() {
         title="My ads"
         subtitle={`${stats.live} live · ${stats.views} total views`}
         right={
-          <Link to="/post" className="btn btn-primary px-3 py-2 text-[12.5px]">
-            <Plus size={15} /> Post
-          </Link>
+          <>
+            <Link
+              to="/insights"
+              aria-label="Seller insights"
+              className="grid h-9 w-9 place-items-center rounded-full active:bg-ink-100 dark:active:bg-white/10"
+            >
+              <BarChart3 size={19} />
+            </Link>
+            <Link to="/post" className="btn btn-primary px-3 py-2 text-[12.5px]">
+              <Plus size={15} /> Post
+            </Link>
+          </>
         }
       />
 
@@ -177,12 +190,16 @@ export default function MyAds() {
                   >
                     {ad.status === 'sold' ? 'Relist' : 'Mark sold'}
                   </button>
-                  <Link
-                    to={`/chats`}
-                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-ink-100 py-2 text-[11.5px] font-bold dark:bg-white/10"
+                  <button
+                    onClick={() => {
+                      setNewPrice(String(Math.round((ad.price * 0.92) / 500) * 500));
+                      setPriceTarget(ad.id);
+                    }}
+                    disabled={ad.status === 'sold'}
+                    className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-ink-100 py-2 text-[11.5px] font-bold disabled:opacity-40 dark:bg-white/10"
                   >
-                    <MessageCircle size={12} /> Chats
-                  </Link>
+                    <ArrowDownRight size={12} /> Lower price
+                  </button>
                   <button
                     onClick={() => setConfirmDelete(ad.id)}
                     aria-label="Delete ad"
@@ -197,7 +214,26 @@ export default function MyAds() {
         )}
 
         {mine.length > 0 && (
-          <div className="mb-4 rounded-2xl border border-dashed p-4 hairline">
+          <Link
+            to="/insights"
+            className="mt-1 flex items-center gap-3 rounded-2xl border p-3.5 hairline"
+            style={{ background: 'var(--surface)' }}
+          >
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-300">
+              <BarChart3 size={18} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[13px] font-bold">See your seller insights</span>
+              <span className="block text-[11.5px] text-muted">
+                Views trend, buyer funnel and what to fix next
+              </span>
+            </span>
+            <ChevronRight size={16} className="text-muted" />
+          </Link>
+        )}
+
+        {mine.length > 0 && (
+          <div className="mb-4 mt-2.5 rounded-2xl border border-dashed p-4 hairline">
             <p className="flex items-center gap-1.5 text-[13px] font-bold">
               <Sparkles size={14} className="text-accent-500" /> Sell 3× faster with a boost
             </p>
@@ -237,6 +273,71 @@ export default function MyAds() {
         <p className="mt-2 text-center text-[11px] text-muted">
           Demo checkout · no card required, nothing is charged.
         </p>
+      </Sheet>
+
+      <Sheet open={!!priceTarget} onClose={() => setPriceTarget(null)} title="Lower the price">
+        {priceAd && (
+          <>
+            <p className="text-[13px] leading-relaxed text-muted">
+              Buyers watching{' '}
+              <b className="text-[color:var(--text)]">{priceAd.title.slice(0, 40)}</b> get notified
+              when the price drops. Ads with a recent price cut sell ~40% faster.
+            </p>
+            <div className="mt-3 flex items-center justify-between rounded-xl border p-3 hairline">
+              <div>
+                <p className="text-[10.5px] uppercase tracking-wider text-muted">Current price</p>
+                <p className="text-[18px] font-extrabold">{inr(priceAd.price)}</p>
+              </div>
+              <ArrowDownRight size={18} className="text-brand-500" />
+              <div className="text-right">
+                <p className="text-[10.5px] uppercase tracking-wider text-muted">New price</p>
+                <p className="text-[18px] font-extrabold text-brand-600 dark:text-brand-400">
+                  {inr(Number(newPrice) || 0)}
+                </p>
+              </div>
+            </div>
+            <div className="mt-2 flex gap-1.5">
+              {[0.95, 0.9, 0.85, 0.8].map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setNewPrice(String(Math.round((priceAd.price * m) / 500) * 500))}
+                  className={cn(
+                    'chip flex-1 justify-center px-2 py-2 text-[11.5px]',
+                    Number(newPrice) === Math.round((priceAd.price * m) / 500) * 500 && 'chip-on',
+                  )}
+                >
+                  -{Math.round((1 - m) * 100)}%
+                </button>
+              ))}
+            </div>
+            <div className="relative mt-3">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[14px] text-muted">
+                ₹
+              </span>
+              <input
+                value={newPrice}
+                onChange={(e) => setNewPrice(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                inputMode="numeric"
+                className="input pl-8 text-[16px] font-bold"
+                aria-label="New price"
+              />
+            </div>
+            <button
+              disabled={!newPrice || Number(newPrice) >= priceAd.price || Number(newPrice) <= 0}
+              onClick={() => {
+                dropPrice(priceAd.id, Number(newPrice));
+                toast(`Price lowered to ${inr(Number(newPrice))}`, 'success', {
+                  label: 'View',
+                  to: `/ad/${priceAd.id}`,
+                });
+                setPriceTarget(null);
+              }}
+              className="btn btn-primary mt-3 w-full"
+            >
+              Update price
+            </button>
+          </>
+        )}
       </Sheet>
 
       <Sheet open={!!confirmDelete} onClose={() => setConfirmDelete(null)} title="Delete this ad?">

@@ -93,8 +93,17 @@ export function FavoriteButton({
   );
 }
 
+export function priceDrop(ad: Ad): { from: number; pct: number } | null {
+  const history = ad.priceHistory;
+  if (!history || history.length < 2) return null;
+  const from = history[0].price;
+  if (from <= ad.price) return null;
+  return { from, pct: Math.round(((from - ad.price) / from) * 100) };
+}
+
 export function AdCard({ ad, compact = false }: { ad: Ad; compact?: boolean }) {
   const seller = useSeller(ad.sellerId);
+  const drop = priceDrop(ad);
   return (
     <Link
       to={`/ad/${ad.id}`}
@@ -140,10 +149,17 @@ export function AdCard({ ad, compact = false }: { ad: Ad; compact?: boolean }) {
       <div className="flex flex-1 flex-col p-3">
         <div className="flex items-baseline justify-between gap-2">
           <span className="text-[17px] font-extrabold tracking-tight">{priceLabel(ad)}</span>
-          {ad.negotiable && ad.category !== 'jobs' && (
-            <span className="shrink-0 text-[10.5px] font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400">
-              Negotiable
+          {drop ? (
+            <span className="shrink-0 rounded bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300">
+              ↓{drop.pct}%
             </span>
+          ) : (
+            ad.negotiable &&
+            ad.category !== 'jobs' && (
+              <span className="shrink-0 text-[10.5px] font-semibold uppercase tracking-wide text-brand-600 dark:text-brand-400">
+                Negotiable
+              </span>
+            )
           )}
         </div>
         <p className="mt-0.5 line-clamp-2 min-h-[34px] text-[13px] font-medium leading-[1.35] text-ink-700 dark:text-ink-100">

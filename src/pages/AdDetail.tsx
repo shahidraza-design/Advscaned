@@ -22,7 +22,7 @@ import {
   Zap,
   Info,
 } from 'lucide-react';
-import { AdCard, AdThumb, FavoriteButton } from '../components/AdCard';
+import { AdCard, AdThumb, FavoriteButton, priceDrop } from '../components/AdCard';
 import { Avatar, Badge, EmptyState, Sheet } from '../components/ui';
 import { categoryById, conditionLabel } from '../lib/data';
 import { useSeller } from '../lib/hooks';
@@ -134,6 +134,7 @@ export default function AdDetail() {
 
   const priceDiff =
     insight && insight.mid > 0 ? Math.round(((ad.price - insight.mid) / insight.mid) * 100) : 0;
+  const drop = priceDrop(ad);
 
   return (
     <div className="mx-auto max-w-[1280px] pb-[76px] lg:pb-6">
@@ -267,6 +268,12 @@ export default function AdDetail() {
                 <h2 className="mt-1 text-[16px] font-semibold leading-snug text-ink-700 dark:text-ink-100">
                   {ad.title}
                 </h2>
+                {drop && (
+                  <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2 py-1 text-[11.5px] font-semibold text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300">
+                    <TrendingDown size={12} />
+                    Price reduced {inr(drop.from - ad.price)} ({drop.pct}%) · was {inr(drop.from)}
+                  </p>
+                )}
                 <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-muted">
                   <span className="flex items-center gap-1">
                     <MapPin size={12} /> {ad.area}, {ad.city}
@@ -309,6 +316,21 @@ export default function AdDetail() {
                   </Badge>
                 ))}
             </div>
+
+            {ad.sellerId === 'me' && (
+              <div className="mt-3 flex items-center gap-2 rounded-xl border border-dashed p-2.5 hairline">
+                <Badge tone="brand">Your ad</Badge>
+                <span className="text-[11.5px] text-muted">
+                  This is how buyers see your listing.
+                </span>
+                <Link
+                  to="/myads"
+                  className="ml-auto text-[11.5px] font-bold text-brand-600 dark:text-brand-400"
+                >
+                  Manage →
+                </Link>
+              </div>
+            )}
 
             {/* --------------------------- Price insight -------------------------- */}
             {insight && insight.mid > 0 && (

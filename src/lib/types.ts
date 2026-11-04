@@ -53,6 +53,8 @@ export interface Ad {
   attributes: Record<string, string>;
   delivery?: boolean;
   warranty?: string;
+  /** Every price the ad has carried, oldest first. */
+  priceHistory?: { price: number; at: number }[];
 }
 
 export interface Message {

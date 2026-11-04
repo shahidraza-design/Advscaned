@@ -35,6 +35,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - **Search** with URL-shareable state: query, category, price range, condition, distance, verified-only, photo-only.
 - **Relevance ranking** that blends text match, freshness, locality, demand signals and promotions.
 - **Live search suggestions**: matching categories, real ad titles with prices, and popular searches as you type.
+- **Voice search** via the Web Speech API (graceful fallback when unsupported).
 - **Sorting**: recommended, newest, price asc/desc, nearest.
 - **Filter pills**, one-tap clearing, and a **save-this-search** action with alerts.
 - **Empty states**, skeleton-free instant filtering (data is local), and 4/3/2-column responsive grids.
@@ -44,6 +45,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - Rich **ad detail page**: swipeable gallery + full-screen photo viewer, condition/category badges, specifications table, description expand, map-style location card, safety guidance, view counts, similar ads.
 - **Price intelligence**: comparable-listing analysis tells buyers/sellers whether a price is above or below market, with confidence and the comps used.
 - **Seller card** with rating, verified badge, response rate, member-since and a full **seller profile** page.
+- **Price-drop history**: ask price changes are timestamped, buyers see “price reduced 12% · was ₹59,000”, cards show a ↓% badge.
 - **Report ad**, **share** (Web Share API with clipboard fallback), **favourite**, **views tracking**.
 
 ### Selling
@@ -64,11 +66,13 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 ### Account & growth
 
 - **Phone + OTP sign-in** (simulated), name + area onboarding, guest browsing with auth gates.
-- **My ads** dashboard: views/saves/live stats, mark sold, relist, delete, drafts.
+- **My ads** dashboard: views/saves/live stats, mark sold, relist, delete, drafts, and **lower-price with suggested cuts**.
+- **Seller insights**: 7/30-day view trend chart, unique buyers, save rate, buyer funnel (views → saves → chats → deals), per-ad sparklines with momentum, and ranked “what to do next” tips.
 - **Boost** flow (simulated checkout) → featured placement + notification.
 - **Saved ads**, **saved searches** with alert toggles and live match counts.
 - **Notification centre** (price drops, replies, matches, boosts, system) with unread state.
 - **Dark mode**, area switcher, demo-data reset, safety centre.
+- **First-run onboarding**: three-slide value tour, shown once and persisted.
 - **Install prompt** (beforeinstallprompt), offline service worker with an **offline banner** and reconnect toast, PWA manifest with shortcuts.
 
 ---
@@ -115,9 +119,12 @@ src/
 │   ├── BottomNav.tsx       # mobile tab bar + Sell FAB
 │   ├── TopBar.tsx          # page header + icon buttons
 │   ├── AdCard.tsx          # grid card, thumb, favourite button, row variant
+│   ├── Onboarding.tsx      # first-run value tour
+│   ├── ErrorBoundary.tsx   # screen-level crash recovery
 │   └── ui.tsx              # Sheet, Avatar, Badge, EmptyState, Toggle, …
 ├── lib/
 │   ├── types.ts            # domain model (Ad, Chat, Seller, Filters, …)
+│   ├── insights.ts         # deterministic analytics, sparklines, funnel, tips
 │   ├── data.ts             # categories, dynamic fields, sellers, areas
 │   ├── seed.ts             # 16 realistic listings, chats, notifications
 │   ├── store.ts            # Zustand marketplace store + toasts
@@ -125,8 +132,8 @@ src/
 │   ├── hooks.ts            # seller resolution ("me" support)
 │   └── utils.ts            # INR formatting, time, image compression, share
 └── pages/                  # Home, Search, AdDetail, PostAd, Chats, ChatThread,
-                            # Favorites, SavedSearches, MyAds, Profile, Login,
-                            # Notifications, SellerProfile, NotFound
+                            # Favorites, SavedSearches, MyAds, Insights, Profile,
+                            # Login, Notifications, SellerProfile, NotFound
 public/
 ├── manifest.webmanifest    # PWA metadata, shortcuts, maskable icons
 ├── sw.js                   # offline shell + runtime caching
@@ -155,7 +162,7 @@ npm run icons       # regenerate web + Android launcher icons
 
 `npm run flows` is a genuine interaction suite — it types into controlled inputs, opens
 sheets, publishes an ad, waits for the seller's auto-reply, applies filters and toggles dark
-mode, asserting the resulting DOM. Both suites run on the real bundle, so they catch broken
+mode, asserting the resulting DOM — including the price-drop flow and the insights dashboard. Both suites run on the real bundle, so they catch broken
 props, bad routes and runtime errors without a browser binary.
 
 ---

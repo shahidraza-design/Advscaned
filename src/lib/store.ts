@@ -39,6 +39,7 @@ interface AppState {
   toggleTheme: () => void;
   setArea: (a: string) => void;
   dismissInstalledHint: () => void;
+  completeOnboarding: () => void;
 
   toggleFavorite: (id: string) => boolean;
   isFavorite: (id: string) => boolean;
@@ -49,6 +50,7 @@ interface AppState {
   updateAd: (id: string, patch: Partial<Ad>) => void;
   deleteAd: (id: string) => void;
   boostAd: (id: string) => void;
+  dropPrice: (id: string, price: number) => void;
 
   startChat: (adId: string) => string;
   sendMessage: (chatId: string, text: string, kind?: Message['kind']) => void;
@@ -113,6 +115,7 @@ export const useStore = create<AppState>()(
       toggleTheme: () => set((s) => ({ theme: s.theme === 'dark' ? 'light' : 'dark' })),
       setArea: (area) => set({ area }),
       dismissInstalledHint: () => set({ installedHintDismissed: true }),
+      completeOnboarding: () => set({ onboarded: true }),
 
       toggleFavorite: (id) => {
         const has = get().favorites.includes(id);
@@ -162,6 +165,31 @@ export const useStore = create<AppState>()(
             ...s.notifications,
           ],
         })),
+
+      dropPrice: (id, price) =>
+        set((s) => {
+          const ad = s.ads.find((a) => a.id === id);
+          if (!ad || price >= ad.price) return s;
+          const history = [
+            ...(ad.priceHistory ?? [{ price: ad.price, at: ad.createdAt }]),
+            { price, at: Date.now() },
+          ];
+          return {
+            ads: s.ads.map((a) => (a.id === id ? { ...a, price, priceHistory: history } : a)),
+            notifications: [
+              {
+                id: uid('n'),
+                type: 'price',
+                title: 'Price updated',
+                body: `“${ad.title}” is now ₹${price.toLocaleString('en-IN')}. Buyers watching it have been notified.`,
+                createdAt: Date.now(),
+                read: false,
+                href: `/ad/${id}`,
+              },
+              ...s.notifications,
+            ],
+          };
+        }),
 
       startChat: (adId) => {
         const existing = get().chats.find((c) => c.adId === adId);

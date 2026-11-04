@@ -20,6 +20,7 @@ const routes = [
   '/chats',
   '/chats/chat-1',
   '/myads',
+  '/insights',
   '/profile',
   '/saved',
   '/post',

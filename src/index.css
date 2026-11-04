@@ -14,6 +14,13 @@
     --brand: #078772;
     --brand-soft: rgba(10, 169, 140, 0.1);
     --ring: rgba(10, 169, 140, 0.35);
+    --map-bg: #edf1ee;
+    --map-tint: rgba(10, 169, 140, 0.35);
+    --map-park: rgba(34, 160, 90, 0.18);
+    --map-water: #a8cfe8;
+    --map-road: rgba(255, 255, 255, 0.9);
+    --map-road-line: rgba(160, 175, 168, 0.45);
+    --map-label: #7b8b81;
   }
   .dark {
     --canvas: #060b14;
@@ -26,6 +33,13 @@
     --brand: #22c3a5;
     --brand-soft: rgba(34, 195, 165, 0.14);
     --ring: rgba(34, 195, 165, 0.4);
+    --map-bg: #0b141f;
+    --map-tint: rgba(34, 195, 165, 0.22);
+    --map-park: rgba(34, 180, 120, 0.16);
+    --map-water: #1c4a68;
+    --map-road: rgba(22, 33, 46, 0.95);
+    --map-road-line: rgba(255, 255, 255, 0.06);
+    --map-label: #64748b;
   }
 
   * {

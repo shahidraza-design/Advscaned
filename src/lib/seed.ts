@@ -1,4 +1,4 @@
-import type { Ad, AppNotification, Chat, Message, SavedSearch } from './types';
+import type { Ad, AppNotification, Chat, Message, Review, SavedSearch } from './types';
 
 const HOUR = 3600 * 1000;
 const DAY = 24 * HOUR;
@@ -373,6 +373,65 @@ export const SEED_ADS: Ad[] = [
     attributes: { serviceType: 'Home repair', availability: 'Anytime' },
   },
 ];
+
+export const SEED_REVIEWS: Review[] = [
+  {
+    id: 'rv1',
+    sellerId: 'u1',
+    authorId: 'x1',
+    authorName: 'Nikhil Bose',
+    rating: 5,
+    text: 'Bought the City from Rohan. He had every service record ready and let me take it to my mechanic first. Zero pressure, honest about a small scratch. Would buy again.',
+    createdAt: now - 6 * DAY,
+  },
+  {
+    id: 'rv2',
+    sellerId: 'u1',
+    authorId: 'x2',
+    authorName: 'Sneha Dutta',
+    rating: 4,
+    text: 'Smooth handover and he even helped with the RC transfer paperwork. Replied a bit slowly on the weekend.',
+    createdAt: now - 19 * DAY,
+  },
+  {
+    id: 'rv3',
+    sellerId: 'u2',
+    authorId: 'x3',
+    authorName: 'Arjun Sen',
+    rating: 5,
+    text: 'The iPhone was exactly as described — battery health matched, box and cable included. Priya even waited while I tested Face ID.',
+    createdAt: now - 2 * DAY,
+  },
+  {
+    id: 'rv4',
+    sellerId: 'u2',
+    authorId: 'x4',
+    authorName: 'Farhan Q.',
+    rating: 5,
+    text: 'Second purchase from Priya. Always well-kept gadgets and fair prices. Highly recommended.',
+    createdAt: now - 11 * DAY,
+  },
+  {
+    id: 'rv5',
+    sellerId: 'u3',
+    authorId: 'x5',
+    authorName: 'Ritika M.',
+    rating: 4,
+    text: 'Good condition PS5, came with the games as promised. Meeting point was a bit far for me.',
+    createdAt: now - 8 * DAY,
+  },
+  {
+    id: 'rv6',
+    sellerId: 'u4',
+    authorId: 'x6',
+    authorName: 'Debjit R.',
+    rating: 5,
+    text: 'Sofa looked even better in person. Meera arranged delivery the same evening for a small fee. Very professional.',
+    createdAt: now - 4 * DAY,
+  },
+];
+
+export const SEED_CHatsPlaceholder = null;
 
 export const SEED_CHATS = (): Chat[] => {
   const mk = (

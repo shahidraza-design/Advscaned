@@ -1,7 +1,13 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { SEED_ADS, SEED_CHATS, SEED_NOTIFICATIONS, SEED_SAVED_SEARCHES } from './seed';
-import type { Ad, AppNotification, Chat, Message, SavedSearch, SessionUser } from './types';
+import {
+  SEED_ADS,
+  SEED_CHATS,
+  SEED_NOTIFICATIONS,
+  SEED_REVIEWS,
+  SEED_SAVED_SEARCHES,
+} from './seed';
+import type { Ad, AppNotification, Chat, Message, Review, SavedSearch, SessionUser } from './types';
 import { sellerById } from './data';
 import { uid } from './utils';
 
@@ -28,6 +34,7 @@ interface AppState {
   recentlyViewed: { id: string; at: number }[];
   notifications: AppNotification[];
   savedSearches: SavedSearch[];
+  reviews: Review[];
   theme: 'light' | 'dark';
   area: string;
   onboarded: boolean;
@@ -61,6 +68,7 @@ interface AppState {
   markAllNotificationsRead: () => void;
   markNotificationRead: (id: string) => void;
 
+  addReview: (r: Omit<Review, 'id' | 'createdAt'>) => void;
   addSavedSearch: (s: Omit<SavedSearch, 'id' | 'createdAt'>) => void;
   removeSavedSearch: (id: string) => void;
   toggleSearchAlerts: (id: string) => void;
@@ -69,6 +77,26 @@ interface AppState {
 }
 
 const now = Date.now();
+
+/** Local notification when a chat reply lands while the tab is in the background. */
+const notifyBrowser = (title: string, body: string) => {
+  try {
+    if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+    if (!document.hidden) return;
+    const n = new Notification(title, {
+      body,
+      icon: '/icons/icon-192.png',
+      badge: '/icons/icon-192.png',
+      tag: 'bazaar-chat',
+    });
+    n.onclick = () => {
+      window.focus();
+      n.close();
+    };
+  } catch {
+    /* notifications are optional */
+  }
+};
 
 const cannedReplies = [
   'Yes, it is still available. When would you like to see it?',
@@ -90,6 +118,7 @@ export const useStore = create<AppState>()(
       ],
       notifications: SEED_NOTIFICATIONS,
       savedSearches: SEED_SAVED_SEARCHES,
+      reviews: SEED_REVIEWS,
       theme: 'light',
       area: 'Salt Lake',
       onboarded: false,
@@ -258,6 +287,7 @@ export const useStore = create<AppState>()(
               ...s.notifications,
             ],
           }));
+          notifyBrowser(`${seller.name.split(' ')[0]} replied on Bazaar`, reply.text);
         }, delay);
       },
 
@@ -295,6 +325,11 @@ export const useStore = create<AppState>()(
           notifications: s.notifications.map((n) => (n.id === id ? { ...n, read: true } : n)),
         })),
 
+      addReview: (review) =>
+        set((s) => ({
+          reviews: [{ ...review, id: uid('rv'), createdAt: Date.now() }, ...s.reviews],
+        })),
+
       addSavedSearch: (search) =>
         set((s) => ({
           savedSearches: [{ ...search, id: uid('ss'), createdAt: Date.now() }, ...s.savedSearches],
@@ -317,6 +352,7 @@ export const useStore = create<AppState>()(
           favorites: ['ad-5', 'ad-7', 'ad-13'],
           notifications: SEED_NOTIFICATIONS,
           savedSearches: SEED_SAVED_SEARCHES,
+          reviews: SEED_REVIEWS,
           recentlyViewed: [],
         }),
     }),
@@ -331,6 +367,7 @@ export const useStore = create<AppState>()(
         recentlyViewed: s.recentlyViewed,
         notifications: s.notifications,
         savedSearches: s.savedSearches,
+        reviews: s.reviews,
         theme: s.theme,
         area: s.area,
         onboarded: s.onboarded,

@@ -78,6 +78,16 @@ export interface Chat {
   archived?: boolean;
 }
 
+export interface Review {
+  id: string;
+  sellerId: string;
+  authorId: string;
+  authorName: string;
+  rating: number;
+  text: string;
+  createdAt: number;
+}
+
 export interface AppNotification {
   id: string;
   type: 'price' | 'chat' | 'system' | 'boost' | 'match';

@@ -43,6 +43,32 @@ export default function Profile() {
   const navigate = useNavigate();
 
   const [locOpen, setLocOpen] = useState(false);
+  const [pushOn, setPushOn] = useState(
+    typeof Notification !== 'undefined' && Notification.permission === 'granted',
+  );
+
+  const togglePush = async (next: boolean) => {
+    if (typeof Notification === 'undefined') {
+      toast('This browser does not support notifications', 'info');
+      return;
+    }
+    if (!next) {
+      setPushOn(false);
+      toast('Alerts muted — you can re-enable anytime', 'info');
+      return;
+    }
+    if (Notification.permission === 'denied') {
+      toast('Notifications are blocked in your browser settings', 'error');
+      return;
+    }
+    const permission = await Notification.requestPermission();
+    const granted = permission === 'granted';
+    setPushOn(granted);
+    toast(
+      granted ? 'Alerts on — we will ping you about new replies' : 'Permission was not granted',
+      granted ? 'success' : 'info',
+    );
+  };
   const [resetOpen, setResetOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
 

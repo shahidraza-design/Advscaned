@@ -254,6 +254,35 @@ async function main() {
   await click('Activate boost', { wait: 350 });
   log(text().includes('Boosted'), 'ad shows boosted state');
 
+  /* ---------------------------------- map --------------------------------- */
+  await goto('/search');
+  await click('Map', { wait: 500 });
+  const pins = [...document.querySelectorAll('[aria-label$="on map"]')];
+  log(pins.length > 3, `map view plots ${pins.length} price pins`);
+  applyClick(pins[0]);
+  await wait(300);
+  log(!!document.querySelector('a[aria-label="Open ad"]'), 'tapping a pin opens the ad preview');
+  await click('List', { wait: 350 });
+  log(
+    document.querySelectorAll('[aria-label="Save ad"]').length > 0,
+    'list view restores ad cards',
+  );
+
+  /* -------------------------------- reviews ------------------------------- */
+  await goto('/seller/u1');
+  log(text().includes('Buyer reviews'), 'seller profile shows reviews section');
+  await click('Write a review', { wait: 320 });
+  log(text().includes('Share how the deal went'), 'review sheet opens');
+  await click('5 stars', { wait: 150 });
+  await type('Bought a car here — everything exactly as described, smooth handover.', {
+    placeholder: 'What went well',
+  });
+  await click('Post review', { wait: 400 });
+  log(
+    text().includes('everything exactly as described'),
+    'new review posted and rendered at the top',
+  );
+
   /* --------------------------------- chat -------------------------------- */
   await goto('/ad/ad-3');
   await click('Chat', { exact: true, wait: 600 });

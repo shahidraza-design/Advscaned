@@ -6,6 +6,8 @@ import {
   BellPlus,
   Camera,
   CornerDownLeft,
+  LayoutGrid,
+  Map as MapIcon,
   MapPin,
   Mic,
   Search,
@@ -16,6 +18,7 @@ import {
 import { AdCard } from '../components/AdCard';
 import { TopBar } from '../components/TopBar';
 import { EmptyState, Sheet, Toggle } from '../components/ui';
+import { MapView } from '../components/MapView';
 import { AREAS, CATEGORIES, categoryById } from '../lib/data';
 import { TRENDING_SEARCHES } from '../lib/seed';
 import { toast, useStore } from '../lib/store';
@@ -59,6 +62,7 @@ export default function SearchPage() {
   const [sheet, setSheet] = useState<null | 'filter' | 'sort'>(null);
   const [focused, setFocused] = useState(false);
   const [listening, setListening] = useState(false);
+  const [view, setView] = useState<'list' | 'map'>('list');
   const [draft, setDraft] = useState({
     min: minPrice ?? 0,
     max: maxPrice ?? 200000,
@@ -249,6 +253,18 @@ export default function SearchPage() {
         subtitle={`${results.length} ads in Kolkata`}
         right={
           <>
+            <button
+              onClick={() => setView((v) => (v === 'list' ? 'map' : 'list'))}
+              aria-label={view === 'list' ? 'Show map view' : 'Show list view'}
+              className={cn(
+                'flex items-center gap-1 rounded-full border px-2.5 py-2 text-[12px] font-semibold hairline',
+                view === 'map' &&
+                  'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300',
+              )}
+            >
+              {view === 'list' ? <MapIcon size={14} /> : <LayoutGrid size={14} />}
+              <span className="hidden xs:inline sm:inline">{view === 'list' ? 'Map' : 'List'}</span>
+            </button>
             <button
               onClick={() => setSheet('sort')}
               aria-label="Sort"
@@ -469,7 +485,21 @@ export default function SearchPage() {
           </div>
         )}
 
-        {results.length === 0 ? (
+        {view === 'map' && results.length > 0 ? (
+          <div className="space-y-3">
+            <MapView ads={results} userArea={area} />
+            <p className="text-center text-[11px] text-muted">
+              Tap a price pin to preview · prices shown per listing
+            </p>
+            <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-2">
+              {results.slice(0, 10).map((ad) => (
+                <div key={ad.id} className="w-[58%] shrink-0 sm:w-[38%]">
+                  <AdCard ad={ad} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : results.length === 0 ? (
           <EmptyState
             icon={<Search size={26} />}
             title="No ads match your filters"

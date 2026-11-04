@@ -36,6 +36,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - **Relevance ranking** that blends text match, freshness, locality, demand signals and promotions.
 - **Live search suggestions**: matching categories, real ad titles with prices, and popular searches as you type.
 - **Voice search** via the Web Speech API (graceful fallback when unsupported).
+- **Map browse mode**: a custom SVG neighbourhood map of Kolkata (river, parks, arterials, area labels) with price pins, tap-to-preview cards, a “you are here” marker and the same filters applied as the list.
 - **Sorting**: recommended, newest, price asc/desc, nearest.
 - **Filter pills**, one-tap clearing, and a **save-this-search** action with alerts.
 - **Empty states**, skeleton-free instant filtering (data is local), and 4/3/2-column responsive grids.
@@ -45,6 +46,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - Rich **ad detail page**: swipeable gallery + full-screen photo viewer, condition/category badges, specifications table, description expand, map-style location card, safety guidance, view counts, similar ads.
 - **Price intelligence**: comparable-listing analysis tells buyers/sellers whether a price is above or below market, with confidence and the comps used.
 - **Seller card** with rating, verified badge, response rate, member-since and a full **seller profile** page.
+- **Buyer reviews**: star summary with distribution bars, review feed, and a write-a-review sheet (rating + text) that posts instantly.
 - **Price-drop history**: ask price changes are timestamped, buyers see “price reduced 12% · was ₹59,000”, cards show a ↓% badge.
 - **Report ad**, **share** (Web Share API with clipboard fallback), **favourite**, **views tracking**.
 
@@ -73,6 +75,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - **Notification centre** (price drops, replies, matches, boosts, system) with unread state.
 - **Dark mode**, area switcher, demo-data reset, safety centre.
 - **First-run onboarding**: three-slide value tour, shown once and persisted.
+- **Local notifications**: opt-in browser alerts when a seller replies while you are in another tab.
 - **Install prompt** (beforeinstallprompt), offline service worker with an **offline banner** and reconnect toast, PWA manifest with shortcuts.
 
 ---
@@ -119,12 +122,14 @@ src/
 │   ├── BottomNav.tsx       # mobile tab bar + Sell FAB
 │   ├── TopBar.tsx          # page header + icon buttons
 │   ├── AdCard.tsx          # grid card, thumb, favourite button, row variant
+│   ├── MapView.tsx         # SVG neighbourhood map with price pins
 │   ├── Onboarding.tsx      # first-run value tour
 │   ├── ErrorBoundary.tsx   # screen-level crash recovery
 │   └── ui.tsx              # Sheet, Avatar, Badge, EmptyState, Toggle, …
 ├── lib/
 │   ├── types.ts            # domain model (Ad, Chat, Seller, Filters, …)
 │   ├── insights.ts         # deterministic analytics, sparklines, funnel, tips
+│   ├── geo.ts              # neighbourhood coordinates, projection, distance
 │   ├── data.ts             # categories, dynamic fields, sellers, areas
 │   ├── seed.ts             # 16 realistic listings, chats, notifications
 │   ├── store.ts            # Zustand marketplace store + toasts

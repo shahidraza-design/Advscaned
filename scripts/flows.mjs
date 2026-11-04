@@ -115,7 +115,10 @@ async function click(textMatch, opts = {}) {
 }
 
 function setValue(el, value) {
-  const proto = el.tagName === 'TEXTAREA' ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
+  const proto =
+    el.tagName === 'TEXTAREA'
+      ? window.HTMLTextAreaElement.prototype
+      : window.HTMLInputElement.prototype;
   Object.getOwnPropertyDescriptor(proto, 'value').set.call(el, value);
   el.dispatchEvent(new window.Event('input', { bubbles: true }));
   el.dispatchEvent(new window.Event('change', { bubbles: true }));
@@ -152,7 +155,9 @@ async function main() {
   await click('Continue', { wait: 1300 });
   log(text().includes('Enter the 4-digit code'), 'OTP step reached after phone entry');
 
-  const otpInputs = [...document.querySelectorAll('input')].filter((i) => i.className.includes('h-16')).slice(0, 4);
+  const otpInputs = [...document.querySelectorAll('input')]
+    .filter((i) => i.className.includes('h-16'))
+    .slice(0, 4);
   for (let i = 0; i < 4; i++) {
     otpInputs[i].focus();
     setValue(otpInputs[i], String(i + 1));
@@ -181,7 +186,10 @@ async function main() {
   await goto('/post');
   log(text().includes('What are you listing?'), 'post wizard step 1 shown');
   await click('Mobiles', { wait: 350 });
-  log(text().includes('Photos') && text().includes('Asking price'), 'details step with photos + price');
+  log(
+    text().includes('Photos') && text().includes('Asking price'),
+    'details step with photos + price',
+  );
 
   await type('iPhone 12 64GB blue, boxed', { placeholder: 'brand' });
   await wait(150);
@@ -190,7 +198,10 @@ async function main() {
   log(text().includes('26,500'), 'price accepted and formatted');
 
   await click('AI price check', { wait: 300 });
-  log(text().includes('Suggested range') || text().includes('Suggested'), 'AI pricer returns a comparable range');
+  log(
+    text().includes('Suggested range') || text().includes('Suggested'),
+    'AI pricer returns a comparable range',
+  );
   await click('Use suggested', { wait: 300 });
 
   await click('Write with AI', { wait: 300 });
@@ -202,7 +213,10 @@ async function main() {
   await click('Continue', { wait: 350 });
   log(text().includes('Review your ad'), 'review step reached');
   await click('Publish ad', { wait: 600 });
-  log(/My ads|\/ad\//.test(window.location.pathname) || text().includes('iPhone 12'), 'ad published and navigated');
+  log(
+    /My ads|\/ad\//.test(window.location.pathname) || text().includes('iPhone 12'),
+    'ad published and navigated',
+  );
 
   await goto('/myads');
   log(text().includes('iPhone 12 64GB blue'), 'new ad appears in My ads');
@@ -223,7 +237,14 @@ async function main() {
   log(text().includes('I can collect today'), 'message sent and rendered');
 
   await wait(3000);
-  log(text().includes('typing') || text().includes('Yes, it is still available') || text().includes('small discount') || text().includes('free after 6pm') || text().includes('preferred time'), 'seller auto-reply arrives');
+  log(
+    text().includes('typing') ||
+      text().includes('Yes, it is still available') ||
+      text().includes('small discount') ||
+      text().includes('free after 6pm') ||
+      text().includes('preferred time'),
+    'seller auto-reply arrives',
+  );
 
   /* -------------------------------- filters ------------------------------ */
   await goto('/search?cat=mobiles');
@@ -231,7 +252,9 @@ async function main() {
   log(text().includes('Price range') && text().includes('Condition'), 'filter sheet opens');
   await click('under ₹20,000', { wait: 150 });
   await click('Apply', { wait: 350 }).catch(async () => {
-    const btn = [...document.querySelectorAll('button')].find((b) => b.textContent?.includes('Show'));
+    const btn = [...document.querySelectorAll('button')].find((b) =>
+      b.textContent?.includes('Show'),
+    );
     if (btn) applyClick(btn);
     await wait(350);
   });
@@ -246,7 +269,10 @@ async function main() {
   }
 
   await goto('/profile');
-  log(text().includes('Arjun Sen') && text().includes('Dark mode'), 'profile shows account + preferences');
+  log(
+    text().includes('Arjun Sen') && text().includes('Dark mode'),
+    'profile shows account + preferences',
+  );
   await click('Dark mode', { wait: 250 });
   log(document.documentElement.classList.contains('dark'), 'dark mode toggles the html class');
 
@@ -255,7 +281,9 @@ async function main() {
     errors.slice(0, 20).forEach((e) => console.log('·', e.slice(0, 220)));
   }
   const passed = steps.filter((s) => s.ok).length;
-  console.log(`\n${passed}/${steps.length} flow checks passed${errors.length ? `, ${errors.length} console errors` : ', no console errors'}`);
+  console.log(
+    `\n${passed}/${steps.length} flow checks passed${errors.length ? `, ${errors.length} console errors` : ', no console errors'}`,
+  );
   process.exit(failures.length || errors.length ? 1 : 0);
 }
 

@@ -165,11 +165,15 @@ export default function Home() {
             </p>
             <div className="mt-6 flex max-w-lg items-center gap-2">
               <div className="relative flex-1">
-                <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-400" />
+                <Search
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-ink-400"
+                />
                 <input
                   placeholder="What are you looking for?"
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter') navigate(`/search?q=${encodeURIComponent(e.currentTarget.value)}`);
+                    if (e.key === 'Enter')
+                      navigate(`/search?q=${encodeURIComponent(e.currentTarget.value)}`);
                   }}
                   className="h-12 w-full rounded-xl border-0 bg-white pl-11 pr-4 text-[14px] text-ink-900 outline-none ring-2 ring-transparent focus:ring-brand-300"
                 />
@@ -262,7 +266,9 @@ export default function Home() {
                 >
                   {c.emoji}
                 </span>
-                <span className="text-center text-[11px] font-semibold leading-tight">{c.name}</span>
+                <span className="text-center text-[11px] font-semibold leading-tight">
+                  {c.name}
+                </span>
               </button>
             ))}
             <button
@@ -377,9 +383,21 @@ export default function Home() {
         {/* ------------------------------ Trust strip ------------------------------ */}
         <section className="mt-8 grid gap-3 sm:grid-cols-3">
           {[
-            { icon: ShieldCheck, title: 'Verified sellers', body: 'Phone-verified, rated by real buyers.' },
-            { icon: MessageCircleIcon, title: 'Chat safely', body: 'Talk in-app — never share OTPs or UPI PINs.' },
-            { icon: BadgeCheck, title: 'Zero listing fees', body: 'Post unlimited ads, pay only to boost.' },
+            {
+              icon: ShieldCheck,
+              title: 'Verified sellers',
+              body: 'Phone-verified, rated by real buyers.',
+            },
+            {
+              icon: MessageCircleIcon,
+              title: 'Chat safely',
+              body: 'Talk in-app — never share OTPs or UPI PINs.',
+            },
+            {
+              icon: BadgeCheck,
+              title: 'Zero listing fees',
+              body: 'Post unlimited ads, pay only to boost.',
+            },
           ].map(({ icon: Icon, title, body }) => (
             <div
               key={title}
@@ -399,7 +417,10 @@ export default function Home() {
 
         {/* --------------------------- Trending searches --------------------------- */}
         <section className="mt-8">
-          <SectionHeader title="Trending in Kolkata" icon={<TrendingUp size={16} className="text-brand-500" />} />
+          <SectionHeader
+            title="Trending in Kolkata"
+            icon={<TrendingUp size={16} className="text-brand-500" />}
+          />
           <div className="flex flex-wrap gap-2">
             {TRENDING_SEARCHES.map((t, i) => (
               <button
@@ -423,7 +444,10 @@ export default function Home() {
               Got something lying around?
             </h3>
             <p className="mt-1 max-w-md text-[13px] text-muted">
-              Post an ad in under a minute. {favorites.length > 0 ? `${favorites.length} saved ads are waiting in your favourites.` : 'Buyers near you are searching right now.'}
+              Post an ad in under a minute.{' '}
+              {favorites.length > 0
+                ? `${favorites.length} saved ads are waiting in your favourites.`
+                : 'Buyers near you are searching right now.'}
             </p>
           </div>
           <div className="mt-4 flex gap-2 lg:mt-0">
@@ -456,7 +480,8 @@ export default function Home() {
               }}
               className={cn(
                 'flex items-center justify-between rounded-xl border px-3 py-3 text-left text-[13px] font-medium hairline',
-                a === area && 'border-brand-500 bg-brand-50 dark:border-brand-500 dark:bg-brand-500/10',
+                a === area &&
+                  'border-brand-500 bg-brand-50 dark:border-brand-500 dark:bg-brand-500/10',
               )}
             >
               <span className="flex items-center gap-2">
@@ -466,10 +491,7 @@ export default function Home() {
             </button>
           ))}
         </div>
-        <button
-          onClick={() => setLocOpen(false)}
-          className="btn btn-primary mt-4 w-full"
-        >
+        <button onClick={() => setLocOpen(false)} className="btn btn-primary mt-4 w-full">
           Use {area}, Kolkata
         </button>
       </Sheet>
@@ -480,7 +502,16 @@ export default function Home() {
 // Small inline icon (keeps import list tidy).
 function MessageCircleIcon({ size = 17 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
     </svg>
   );

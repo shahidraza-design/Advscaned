@@ -121,7 +121,11 @@ export default function AdDetail() {
     if (!amount) return;
     requireAuth(() => {
       const chatId = startChat(ad.id);
-      sendMessage(chatId, `Hi, would you accept ₹${amount.toLocaleString('en-IN')} for this?`, 'offer');
+      sendMessage(
+        chatId,
+        `Hi, would you accept ₹${amount.toLocaleString('en-IN')} for this?`,
+        'offer',
+      );
       setSheet(null);
       setOffer('');
       navigate(`/chats/${chatId}`);
@@ -150,7 +154,14 @@ export default function AdDetail() {
                 text: `${ad.title} — ${inr(ad.price)} on Bazaar`,
                 url: window.location.href,
               });
-              toast(r === 'copied' ? 'Link copied to clipboard' : r === 'shared' ? 'Shared' : 'Could not share', r === 'failed' ? 'error' : 'success');
+              toast(
+                r === 'copied'
+                  ? 'Link copied to clipboard'
+                  : r === 'shared'
+                    ? 'Shared'
+                    : 'Could not share',
+                r === 'failed' ? 'error' : 'success',
+              );
             }}
             aria-label="Share"
             className="grid h-10 w-10 place-items-center rounded-full bg-white/85 text-ink-800 shadow-sm backdrop-blur active:scale-90 dark:bg-ink-900/80 dark:text-white"
@@ -162,7 +173,10 @@ export default function AdDetail() {
               vibrate(10);
               requireAuth(() => {
                 const on = toggleFavorite(ad.id);
-                toast(on ? 'Saved to favourites' : 'Removed from favourites', 'success', { label: 'View', to: '/favorites' });
+                toast(on ? 'Saved to favourites' : 'Removed from favourites', 'success', {
+                  label: 'View',
+                  to: '/favorites',
+                });
               });
             }}
             aria-label="Save"
@@ -193,11 +207,17 @@ export default function AdDetail() {
                   className="relative aspect-[4/3] w-full shrink-0 snap-center overflow-hidden bg-ink-100 text-left lg:h-full dark:bg-white/5"
                 >
                   {src ? (
-                    <img src={src} alt={`${ad.title} ${i + 1}`} className="h-full w-full object-cover" />
+                    <img
+                      src={src}
+                      alt={`${ad.title} ${i + 1}`}
+                      className="h-full w-full object-cover"
+                    />
                   ) : (
                     <div
                       className="grid h-full w-full place-items-center"
-                      style={{ background: `linear-gradient(140deg, ${cat?.tint}25, ${cat?.tint}05)` }}
+                      style={{
+                        background: `linear-gradient(140deg, ${cat?.tint}25, ${cat?.tint}05)`,
+                      }}
                     >
                       <span className="text-6xl opacity-50">{cat?.emoji}</span>
                     </div>
@@ -235,7 +255,9 @@ export default function AdDetail() {
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
                 <div className="flex items-baseline gap-2">
-                  <h1 className="text-[26px] font-extrabold tracking-[-0.02em]">{priceLabel(ad)}</h1>
+                  <h1 className="text-[26px] font-extrabold tracking-[-0.02em]">
+                    {priceLabel(ad)}
+                  </h1>
                   {ad.negotiable && ad.category !== 'jobs' && (
                     <span className="rounded-md bg-brand-50 px-1.5 py-1 text-[10.5px] font-bold uppercase tracking-wide text-brand-700 dark:bg-brand-500/15 dark:text-brand-300">
                       Negotiable
@@ -268,14 +290,24 @@ export default function AdDetail() {
             {/* quick facts */}
             <div className="mt-3 flex flex-wrap gap-1.5">
               <Badge tone="neutral">{conditionLabel(ad.condition)}</Badge>
-              {cat && <Badge tone="brand">{cat.emoji} {cat.name}</Badge>}
-              {ad.delivery && <Badge tone="blue"><Truck size={11} /> Delivery</Badge>}
-              {ad.status === 'sold' && <Badge tone="red">Sold</Badge>}
-              {Object.entries(ad.attributes).slice(0, 3).map(([k, v]) => (
-                <Badge key={k} tone="neutral">
-                  {cat?.fields.find((f) => f.key === k)?.label ?? k}: {v}
+              {cat && (
+                <Badge tone="brand">
+                  {cat.emoji} {cat.name}
                 </Badge>
-              ))}
+              )}
+              {ad.delivery && (
+                <Badge tone="blue">
+                  <Truck size={11} /> Delivery
+                </Badge>
+              )}
+              {ad.status === 'sold' && <Badge tone="red">Sold</Badge>}
+              {Object.entries(ad.attributes)
+                .slice(0, 3)
+                .map(([k, v]) => (
+                  <Badge key={k} tone="neutral">
+                    {cat?.fields.find((f) => f.key === k)?.label ?? k}: {v}
+                  </Badge>
+                ))}
             </div>
 
             {/* --------------------------- Price insight -------------------------- */}
@@ -293,7 +325,8 @@ export default function AdDetail() {
                         : `${priceDiff}% above similar ads`}
                   </p>
                   <p className="text-[11.5px] leading-snug text-brand-800/80 dark:text-brand-300/80">
-                    Typical range {inr(insight.low)} – {inr(insight.high)} · {insight.confidence}% confidence
+                    Typical range {inr(insight.low)} – {inr(insight.high)} · {insight.confidence}%
+                    confidence
                   </p>
                 </div>
                 <button
@@ -381,7 +414,10 @@ export default function AdDetail() {
             </section>
 
             {/* ------------------------------ Safety tips ------------------------- */}
-            <section className="mt-5 rounded-2xl border p-3.5 hairline" style={{ background: 'var(--surface)' }}>
+            <section
+              className="mt-5 rounded-2xl border p-3.5 hairline"
+              style={{ background: 'var(--surface)' }}
+            >
               <div className="flex items-center gap-2">
                 <ShieldCheck size={16} className="text-brand-600 dark:text-brand-400" />
                 <p className="text-[13px] font-bold">Stay safe while you trade</p>
@@ -418,7 +454,9 @@ export default function AdDetail() {
               <div className="mt-3 grid gap-2">
                 <button onClick={openChat} className="btn btn-primary w-full">
                   <MessageCircle size={17} /> Chat with seller
-                  {unread > 0 && <span className="rounded-full bg-white/25 px-1.5 text-[11px]">{unread}</span>}
+                  {unread > 0 && (
+                    <span className="rounded-full bg-white/25 px-1.5 text-[11px]">{unread}</span>
+                  )}
                 </button>
                 <button onClick={() => setSheet('call')} className="btn btn-outline w-full">
                   <Phone size={16} /> Show phone number
@@ -433,7 +471,10 @@ export default function AdDetail() {
               <p className="mt-1 text-[11.5px] leading-relaxed text-muted">
                 Pay only after inspection. Bazaar never asks for OTPs, deposits or gift cards.
               </p>
-              <button onClick={() => setSheet('safe')} className="mt-2 text-[11.5px] font-bold text-brand-600">
+              <button
+                onClick={() => setSheet('safe')}
+                className="mt-2 text-[11.5px] font-bold text-brand-600"
+              >
                 Read safe trading guide →
               </button>
             </div>
@@ -486,7 +527,10 @@ export default function AdDetail() {
             }}
           >
             {ad.images.map((src, i) => (
-              <div key={i} className="flex h-full w-full shrink-0 snap-center items-center justify-center p-2">
+              <div
+                key={i}
+                className="flex h-full w-full shrink-0 snap-center items-center justify-center p-2"
+              >
                 <img src={src} alt="" className="max-h-full max-w-full rounded-lg object-contain" />
               </div>
             ))}
@@ -533,13 +577,16 @@ export default function AdDetail() {
 
       <Sheet open={sheet === 'offer'} onClose={() => setSheet(null)} title="Make an offer">
         <p className="text-[13px] text-muted">
-          Asking price is <span className="font-bold text-[color:var(--text)]">{inr(ad.price)}</span>. Sellers
+          Asking price is{' '}
+          <span className="font-bold text-[color:var(--text)]">{inr(ad.price)}</span>. Sellers
           respond better to offers close to the asking price.
         </p>
         <div className="mt-4">
           <label className="label">Your offer</label>
           <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[15px] text-muted">₹</span>
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[15px] text-muted">
+              ₹
+            </span>
             <input
               value={offer}
               onChange={(e) => setOffer(e.target.value)}
@@ -570,28 +617,32 @@ export default function AdDetail() {
 
       <Sheet open={sheet === 'report'} onClose={() => setSheet(null)} title="Report this ad">
         <div className="space-y-1.5">
-          {['Item already sold', 'Wrong category', 'Suspected scam', 'Prohibited item', 'Duplicate ad'].map(
-            (r) => (
-              <button
-                key={r}
-                onClick={() => {
-                  setSheet(null);
-                  toast('Thanks — our trust team will review this ad', 'success');
-                }}
-                className="flex w-full items-center justify-between rounded-xl border px-3.5 py-3 text-left text-[13.5px] font-medium hairline"
-              >
-                {r} <ChevronRight size={15} className="text-muted" />
-              </button>
-            ),
-          )}
+          {[
+            'Item already sold',
+            'Wrong category',
+            'Suspected scam',
+            'Prohibited item',
+            'Duplicate ad',
+          ].map((r) => (
+            <button
+              key={r}
+              onClick={() => {
+                setSheet(null);
+                toast('Thanks — our trust team will review this ad', 'success');
+              }}
+              className="flex w-full items-center justify-between rounded-xl border px-3.5 py-3 text-left text-[13.5px] font-medium hairline"
+            >
+              {r} <ChevronRight size={15} className="text-muted" />
+            </button>
+          ))}
         </div>
       </Sheet>
 
       <Sheet open={sheet === 'safe'} onClose={() => setSheet(null)} title="How we price-check">
         <p className="text-[13px] leading-relaxed text-muted">
-          Our price insights compare this ad against {insight?.comparables.length ?? 0}+ similar live
-          listings in Kolkata, adjusting for condition, age and demand. It is a guide, not a valuation —
-          always inspect the item before paying.
+          Our price insights compare this ad against {insight?.comparables.length ?? 0}+ similar
+          live listings in Kolkata, adjusting for condition, age and demand. It is a guide, not a
+          valuation — always inspect the item before paying.
         </p>
         <div className="mt-3 space-y-2">
           {insight?.comparables.map((c) => (

@@ -46,7 +46,11 @@ export default function Notifications() {
       />
 
       {notifications.length === 0 ? (
-        <EmptyState icon={<Bell size={26} />} title="No notifications" body="Price drops, replies and matches will land here." />
+        <EmptyState
+          icon={<Bell size={26} />}
+          title="No notifications"
+          body="Price drops, replies and matches will land here."
+        />
       ) : (
         <div className="divide-hair">
           {notifications.map((n) => {
@@ -61,17 +65,31 @@ export default function Notifications() {
                   !n.read && 'bg-brand-50/40 dark:bg-brand-500/[0.06]',
                 )}
               >
-                <span className={cn('grid h-10 w-10 shrink-0 place-items-center rounded-xl', TONES[n.type])}>
+                <span
+                  className={cn(
+                    'grid h-10 w-10 shrink-0 place-items-center rounded-xl',
+                    TONES[n.type],
+                  )}
+                >
                   <Icon size={18} />
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline justify-between gap-2">
-                    <p className={cn('truncate text-[13.5px]', n.read ? 'font-semibold' : 'font-bold')}>
+                    <p
+                      className={cn(
+                        'truncate text-[13.5px]',
+                        n.read ? 'font-semibold' : 'font-bold',
+                      )}
+                    >
                       {n.title}
                     </p>
-                    <span className="shrink-0 text-[10.5px] text-muted">{timeAgo(n.createdAt)}</span>
+                    <span className="shrink-0 text-[10.5px] text-muted">
+                      {timeAgo(n.createdAt)}
+                    </span>
                   </div>
-                  <p className="mt-0.5 line-clamp-2 text-[12px] leading-relaxed text-muted">{n.body}</p>
+                  <p className="mt-0.5 line-clamp-2 text-[12px] leading-relaxed text-muted">
+                    {n.body}
+                  </p>
                 </div>
                 {!n.read && <span className="mt-4 h-2 w-2 shrink-0 rounded-full bg-brand-500" />}
               </Link>

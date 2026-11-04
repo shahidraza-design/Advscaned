@@ -1,19 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import {
-  SEED_ADS,
-  SEED_CHATS,
-  SEED_NOTIFICATIONS,
-  SEED_SAVED_SEARCHES,
-} from './seed';
-import type {
-  Ad,
-  AppNotification,
-  Chat,
-  Message,
-  SavedSearch,
-  SessionUser,
-} from './types';
+import { SEED_ADS, SEED_CHATS, SEED_NOTIFICATIONS, SEED_SAVED_SEARCHES } from './seed';
+import type { Ad, AppNotification, Chat, Message, SavedSearch, SessionUser } from './types';
 import { sellerById } from './data';
 import { uid } from './utils';
 
@@ -130,7 +118,9 @@ export const useStore = create<AppState>()(
         const has = get().favorites.includes(id);
         set((s) => ({
           favorites: has ? s.favorites.filter((f) => f !== id) : [id, ...s.favorites],
-          ads: s.ads.map((a) => (a.id === id ? { ...a, saves: Math.max(0, a.saves + (has ? -1 : 1)) } : a)),
+          ads: s.ads.map((a) =>
+            a.id === id ? { ...a, saves: Math.max(0, a.saves + (has ? -1 : 1)) } : a,
+          ),
         }));
         return !has;
       },
@@ -138,7 +128,10 @@ export const useStore = create<AppState>()(
 
       markViewed: (id) =>
         set((s) => ({
-          recentlyViewed: [{ id, at: Date.now() }, ...s.recentlyViewed.filter((r) => r.id !== id)].slice(0, 24),
+          recentlyViewed: [
+            { id, at: Date.now() },
+            ...s.recentlyViewed.filter((r) => r.id !== id),
+          ].slice(0, 24),
         })),
 
       incrementViews: (id) =>
@@ -246,9 +239,7 @@ export const useStore = create<AppState>()(
             c.id === chatId
               ? {
                   ...c,
-                  messages: c.messages.map((m) =>
-                    m.senderId !== 'me' ? { ...m, read: true } : m,
-                  ),
+                  messages: c.messages.map((m) => (m.senderId !== 'me' ? { ...m, read: true } : m)),
                 }
               : c,
           ),
@@ -278,10 +269,7 @@ export const useStore = create<AppState>()(
 
       addSavedSearch: (search) =>
         set((s) => ({
-          savedSearches: [
-            { ...search, id: uid('ss'), createdAt: Date.now() },
-            ...s.savedSearches,
-          ],
+          savedSearches: [{ ...search, id: uid('ss'), createdAt: Date.now() }, ...s.savedSearches],
         })),
 
       removeSavedSearch: (id) =>

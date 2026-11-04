@@ -104,13 +104,33 @@ function drawIcon(size, maskable) {
           const v = (py - size / 2) / scale + size / 2;
 
           // bag body
-          const bagD = sdRoundRect(u, v, size / 2, size * 0.6, size * 0.235, size * 0.17, size * 0.06);
-          const handleD = sdHandle(u, v, size / 2, size * 0.43, size * 0.135, size * 0.045, size * 0.43);
+          const bagD = sdRoundRect(
+            u,
+            v,
+            size / 2,
+            size * 0.6,
+            size * 0.235,
+            size * 0.17,
+            size * 0.06,
+          );
+          const handleD = sdHandle(
+            u,
+            v,
+            size / 2,
+            size * 0.43,
+            size * 0.135,
+            size * 0.045,
+            size * 0.43,
+          );
           const strokeIn = size * 0.045;
           const bagStroke =
             smooth(strokeIn / 2 + 0.6, strokeIn / 2 - 0.6, Math.abs(bagD) - strokeIn / 2) *
             smooth(0.8, -0.8, bagD + size * 0.13);
-          const handleStroke = smooth(strokeIn / 2 + 0.6, strokeIn / 2 - 0.6, Math.abs(handleD) - strokeIn / 2);
+          const handleStroke = smooth(
+            strokeIn / 2 + 0.6,
+            strokeIn / 2 - 0.6,
+            Math.abs(handleD) - strokeIn / 2,
+          );
           const white = Math.max(bagStroke, handleStroke);
 
           cr = mix(cr, 255, white);
@@ -147,13 +167,33 @@ function drawGlyph(size) {
           const py = y + (sy + 0.5) / SS;
           const u = (px - size / 2) / scale + size / 2;
           const v = (py - size / 2) / scale + size / 2;
-          const bagD = sdRoundRect(u, v, size / 2, size * 0.6, size * 0.235, size * 0.17, size * 0.06);
-          const handleD = sdHandle(u, v, size / 2, size * 0.43, size * 0.135, size * 0.045, size * 0.43);
+          const bagD = sdRoundRect(
+            u,
+            v,
+            size / 2,
+            size * 0.6,
+            size * 0.235,
+            size * 0.17,
+            size * 0.06,
+          );
+          const handleD = sdHandle(
+            u,
+            v,
+            size / 2,
+            size * 0.43,
+            size * 0.135,
+            size * 0.045,
+            size * 0.43,
+          );
           const strokeIn = size * 0.045;
           const bagStroke =
             smooth(strokeIn / 2 + 0.6, strokeIn / 2 - 0.6, Math.abs(bagD) - strokeIn / 2) *
             smooth(0.8, -0.8, bagD + size * 0.13);
-          const handleStroke = smooth(strokeIn / 2 + 0.6, strokeIn / 2 - 0.6, Math.abs(handleD) - strokeIn / 2);
+          const handleStroke = smooth(
+            strokeIn / 2 + 0.6,
+            strokeIn / 2 - 0.6,
+            Math.abs(handleD) - strokeIn / 2,
+          );
           alpha += Math.max(bagStroke, handleStroke);
         }
       }

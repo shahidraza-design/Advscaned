@@ -62,7 +62,28 @@ async function main() {
   };
   window.navigator.vibrate = () => true;
 
-  for (const key of ['window', 'document', 'navigator', 'localStorage', 'HTMLElement', 'HTMLInputElement', 'HTMLTextAreaElement', 'SVGElement', 'Element', 'HTMLDivElement', 'DocumentFragment', 'Node', 'Event', 'MouseEvent', 'CustomEvent', 'requestAnimationFrame', 'cancelAnimationFrame', 'getComputedStyle', 'matchMedia', 'location']) {
+  for (const key of [
+    'window',
+    'document',
+    'navigator',
+    'localStorage',
+    'HTMLElement',
+    'HTMLInputElement',
+    'HTMLTextAreaElement',
+    'SVGElement',
+    'Element',
+    'HTMLDivElement',
+    'DocumentFragment',
+    'Node',
+    'Event',
+    'MouseEvent',
+    'CustomEvent',
+    'requestAnimationFrame',
+    'cancelAnimationFrame',
+    'getComputedStyle',
+    'matchMedia',
+    'location',
+  ]) {
     try {
       globalThis[key] = window[key];
     } catch {
@@ -117,13 +138,17 @@ async function main() {
   for (const r of results) {
     const ok = r.chars > 40;
     if (!ok) failed++;
-    console.log(`${ok ? '✓' : '✗'} ${r.route.padEnd(38)} ${String(r.chars).padStart(5)} chars  ${r.head}`);
+    console.log(
+      `${ok ? '✓' : '✗'} ${r.route.padEnd(38)} ${String(r.chars).padStart(5)} chars  ${r.head}`,
+    );
   }
   if (errors.length) {
     console.log('\n--- console errors ---');
     errors.slice(0, 25).forEach((e) => console.log('·', e.slice(0, 300)));
   }
-  console.log(`\n${results.length - failed}/${results.length} routes rendered${errors.length ? `, ${errors.length} errors` : ', no errors'}`);
+  console.log(
+    `\n${results.length - failed}/${results.length} routes rendered${errors.length ? `, ${errors.length} errors` : ', no errors'}`,
+  );
   process.exit(failed || errors.length ? 1 : 0);
 }
 

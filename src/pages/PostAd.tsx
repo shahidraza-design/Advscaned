@@ -113,7 +113,9 @@ export default function PostAd() {
     const ad: Ad = {
       id,
       title: title.trim(),
-      description: description.trim() || `${title.trim()} in ${condition} condition. Contact me for more details.`,
+      description:
+        description.trim() ||
+        `${title.trim()} in ${condition} condition. Contact me for more details.`,
       price: Number(price) || 0,
       category,
       condition,
@@ -133,7 +135,10 @@ export default function PostAd() {
     createAd(ad);
     vibrate(20);
     if (asDraft) {
-      toast('Saved as draft — finish it anytime from My ads', 'info', { label: 'My ads', to: '/myads' });
+      toast('Saved as draft — finish it anytime from My ads', 'info', {
+        label: 'My ads',
+        to: '/myads',
+      });
       navigate('/myads');
       return;
     }
@@ -214,7 +219,10 @@ export default function PostAd() {
               </div>
               <div className="grid grid-cols-3 gap-2">
                 {images.map((src, i) => (
-                  <div key={i} className="group relative aspect-square overflow-hidden rounded-xl border hairline">
+                  <div
+                    key={i}
+                    className="group relative aspect-square overflow-hidden rounded-xl border hairline"
+                  >
                     <img src={src} alt="" className="h-full w-full object-cover" />
                     {i === 0 && (
                       <span className="absolute left-1 top-1 rounded bg-brand-600 px-1.5 py-0.5 text-[9px] font-bold uppercase text-white">
@@ -235,7 +243,9 @@ export default function PostAd() {
                     onClick={() => fileRef.current?.click()}
                     className="grid aspect-square place-items-center rounded-xl border-2 border-dashed text-muted transition active:scale-95 hairline"
                   >
-                    {busy ? <Spinner /> : (
+                    {busy ? (
+                      <Spinner />
+                    ) : (
                       <span className="flex flex-col items-center gap-1">
                         <ImagePlus size={20} />
                         <span className="text-[10.5px] font-semibold">Add photo</span>
@@ -253,8 +263,8 @@ export default function PostAd() {
                 onChange={(e) => addPhotos(e.target.files)}
               />
               <p className="mt-1.5 flex items-center gap-1 text-[11px] text-muted">
-                <Camera size={11} /> Sharp, well-lit photos sell up to 2× faster. Ads with photos get 7×
-                more views.
+                <Camera size={11} /> Sharp, well-lit photos sell up to 2× faster. Ads with photos
+                get 7× more views.
               </p>
             </div>
 
@@ -347,7 +357,9 @@ export default function PostAd() {
                 </button>
               </div>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[15px] text-muted">₹</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[15px] text-muted">
+                  ₹
+                </span>
                 <input
                   value={price}
                   onChange={(e) => setPrice(e.target.value.replace(/[^\d]/g, '').slice(0, 9))}
@@ -390,7 +402,8 @@ export default function PostAd() {
                       writeDescription({
                         category: category!,
                         title,
-                        condition: CONDITIONS.find((c) => c.id === condition)?.label.toLowerCase() ?? 'good',
+                        condition:
+                          CONDITIONS.find((c) => c.id === condition)?.label.toLowerCase() ?? 'good',
                         area: locality,
                         price: Number(price),
                         attributes,
@@ -434,14 +447,15 @@ export default function PostAd() {
                 <span className="block text-[10.5px] font-semibold uppercase tracking-wider text-muted">
                   Area
                 </span>
-                <span className="block text-[14px] font-bold">
-                  {locality}, Kolkata
-                </span>
+                <span className="block text-[14px] font-bold">{locality}, Kolkata</span>
               </span>
               <span className="text-[12px] font-bold text-brand-600">Change</span>
             </button>
 
-            <div className="rounded-xl border p-3.5 hairline" style={{ background: 'var(--surface)' }}>
+            <div
+              className="rounded-xl border p-3.5 hairline"
+              style={{ background: 'var(--surface)' }}
+            >
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="flex items-center gap-1.5 text-[13.5px] font-bold">
@@ -455,15 +469,20 @@ export default function PostAd() {
               </div>
             </div>
 
-            <div className="rounded-xl border p-3.5 hairline" style={{ background: 'var(--surface)' }}>
-              <p className="text-[10.5px] font-semibold uppercase tracking-wider text-muted">Contact</p>
+            <div
+              className="rounded-xl border p-3.5 hairline"
+              style={{ background: 'var(--surface)' }}
+            >
+              <p className="text-[10.5px] font-semibold uppercase tracking-wider text-muted">
+                Contact
+              </p>
               <p className="mt-1 flex items-center gap-1.5 text-[14px] font-bold">
                 {user?.name} <BadgeCheck size={14} className="text-brand-500" />
               </p>
               <p className="text-[12px] text-muted">{user?.phone} · verified</p>
               <p className="mt-2 text-[11px] leading-relaxed text-muted">
-                Your number stays hidden until you choose to reveal it. Buyers reach you through Bazaar
-                chat first.
+                Your number stays hidden until you choose to reveal it. Buyers reach you through
+                Bazaar chat first.
               </p>
             </div>
           </div>
@@ -479,14 +498,19 @@ export default function PostAd() {
               </p>
             </div>
 
-            <div className="overflow-hidden rounded-2xl border hairline" style={{ background: 'var(--surface)' }}>
+            <div
+              className="overflow-hidden rounded-2xl border hairline"
+              style={{ background: 'var(--surface)' }}
+            >
               <div className="relative aspect-[16/10] bg-ink-100 dark:bg-white/5">
                 {images[0] ? (
                   <img src={images[0]} alt="" className="h-full w-full object-cover" />
                 ) : (
                   <div
                     className="grid h-full place-items-center"
-                    style={{ background: `linear-gradient(140deg, ${meta.tint}25, ${meta.tint}05)` }}
+                    style={{
+                      background: `linear-gradient(140deg, ${meta.tint}25, ${meta.tint}05)`,
+                    }}
                   >
                     <span className="text-5xl opacity-50">{meta.emoji}</span>
                   </div>
@@ -496,7 +520,9 @@ export default function PostAd() {
                 </span>
               </div>
               <div className="p-4">
-                <p className="text-[22px] font-extrabold tracking-tight">{inr(Number(price) || 0)}</p>
+                <p className="text-[22px] font-extrabold tracking-tight">
+                  {inr(Number(price) || 0)}
+                </p>
                 <p className="mt-0.5 text-[14px] font-semibold">{title || 'Untitled ad'}</p>
                 <p className="mt-1 text-[12px] text-muted">
                   {locality}, Kolkata · {CONDITIONS.find((c) => c.id === condition)?.label}
@@ -513,10 +539,17 @@ export default function PostAd() {
                 { label: 'Photos', value: `${images.length} added`, ok: images.length > 0 },
                 { label: 'Title', value: title ? 'Looks good' : 'Missing', ok: !!title },
                 { label: 'Price', value: price ? inr(Number(price)) : 'Missing', ok: !!price },
-                { label: 'Description', value: description ? `${description.length} chars` : 'Optional', ok: true },
+                {
+                  label: 'Description',
+                  value: description ? `${description.length} chars` : 'Optional',
+                  ok: true,
+                },
                 { label: 'Location', value: `${locality}, Kolkata`, ok: true },
               ].map((r) => (
-                <div key={r.label} className="flex items-center justify-between rounded-xl border px-3 py-2.5 hairline">
+                <div
+                  key={r.label}
+                  className="flex items-center justify-between rounded-xl border px-3 py-2.5 hairline"
+                >
                   <span className="text-[12.5px] text-muted">{r.label}</span>
                   <span className="flex items-center gap-1.5 text-[12.5px] font-semibold">
                     {r.value}
@@ -531,8 +564,8 @@ export default function PostAd() {
             </div>
 
             <div className="rounded-xl bg-brand-50 p-3 text-[11.5px] leading-relaxed text-brand-900 dark:bg-brand-500/10 dark:text-brand-200">
-              By publishing you agree to Bazaar's posting rules. Ads for prohibited items are removed and
-              repeat offenders are banned.
+              By publishing you agree to Bazaar's posting rules. Ads for prohibited items are
+              removed and repeat offenders are banned.
             </div>
 
             <div className="flex gap-2">
@@ -558,7 +591,10 @@ export default function PostAd() {
           }}
         >
           <div className="flex gap-2">
-            <button onClick={() => setStep((s) => Math.max(0, s - 1))} className="btn btn-outline px-4">
+            <button
+              onClick={() => setStep((s) => Math.max(0, s - 1))}
+              className="btn btn-outline px-4"
+            >
               <ArrowLeft size={16} />
             </button>
             <button onClick={next} className="btn btn-primary flex-1">
@@ -580,12 +616,16 @@ export default function PostAd() {
                 {inr(insight.low)} – {inr(insight.high)}
               </p>
               <p className="mt-1 text-[12px] text-white/75">
-                Based on {insight.comparables.length} comparable ads · {insight.confidence}% confidence
+                Based on {insight.comparables.length} comparable ads · {insight.confidence}%
+                confidence
               </p>
             </div>
             <div className="mt-4 space-y-2">
               {insight.comparables.map((c) => (
-                <div key={c.id} className="flex items-center justify-between rounded-xl border px-3 py-2.5 hairline">
+                <div
+                  key={c.id}
+                  className="flex items-center justify-between rounded-xl border px-3 py-2.5 hairline"
+                >
                   <span className="mr-3 min-w-0 truncate text-[12.5px]">{c.title}</span>
                   <span className="shrink-0 text-[12.5px] font-bold">{inr(c.price)}</span>
                 </div>

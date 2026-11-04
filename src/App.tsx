@@ -38,71 +38,71 @@ export default function App() {
   return (
     <ErrorBoundary>
       <Routes>
-      <Route element={<AppShell />}>
-        <Route index element={<Home />} />
-        <Route path="search" element={<SearchPage />} />
-        <Route path="ad/:id" element={<AdDetail />} />
-        <Route path="seller/:id" element={<SellerProfile />} />
-        <Route path="login" element={<Login />} />
-        <Route
-          path="post"
-          element={
-            <RequireAuth>
-              <PostAd />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="chats"
-          element={
-            <RequireAuth>
-              <Chats />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="chats/:id"
-          element={
-            <RequireAuth>
-              <ChatThread />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="favorites"
-          element={
-            <RequireAuth>
-              <Favorites />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="saved"
-          element={
-            <RequireAuth>
-              <SavedSearchesPage />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="myads"
-          element={
-            <RequireAuth>
-              <MyAds />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="profile"
-          element={
-            <RequireAuth>
-              <Profile />
-            </RequireAuth>
-          }
-        />
-        <Route path="notifications" element={<Notifications />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
+        <Route element={<AppShell />}>
+          <Route index element={<Home />} />
+          <Route path="search" element={<SearchPage />} />
+          <Route path="ad/:id" element={<AdDetail />} />
+          <Route path="seller/:id" element={<SellerProfile />} />
+          <Route path="login" element={<Login />} />
+          <Route
+            path="post"
+            element={
+              <RequireAuth>
+                <PostAd />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="chats"
+            element={
+              <RequireAuth>
+                <Chats />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="chats/:id"
+            element={
+              <RequireAuth>
+                <ChatThread />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="favorites"
+            element={
+              <RequireAuth>
+                <Favorites />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="saved"
+            element={
+              <RequireAuth>
+                <SavedSearchesPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="myads"
+            element={
+              <RequireAuth>
+                <MyAds />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Routes>
     </ErrorBoundary>
   );

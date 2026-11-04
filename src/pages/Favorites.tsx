@@ -17,7 +17,10 @@ export default function Favorites() {
         title="Saved ads"
         subtitle={`${saved.length} item${saved.length === 1 ? '' : 's'} you're watching`}
         right={
-          <Link to="/saved" className="flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1.5 text-[11.5px] font-bold text-brand-700 dark:bg-brand-500/15 dark:text-brand-300">
+          <Link
+            to="/saved"
+            className="flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1.5 text-[11.5px] font-bold text-brand-700 dark:bg-brand-500/15 dark:text-brand-300"
+          >
             <BellPlus size={12} /> Searches
           </Link>
         }

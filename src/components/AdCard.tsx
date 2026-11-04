@@ -101,7 +101,12 @@ export function AdCard({ ad, compact = false }: { ad: Ad; compact?: boolean }) {
       className="group relative flex flex-col overflow-hidden rounded-2xl border shadow-card transition-transform duration-200 will-change-transform hover:-translate-y-0.5"
       style={{ background: 'var(--surface)', borderColor: 'var(--line)' }}
     >
-      <div className={cn('relative overflow-hidden bg-ink-100 dark:bg-white/5', compact ? 'aspect-[4/3]' : 'aspect-[5/4]')}>
+      <div
+        className={cn(
+          'relative overflow-hidden bg-ink-100 dark:bg-white/5',
+          compact ? 'aspect-[4/3]' : 'aspect-[5/4]',
+        )}
+      >
         <AdThumb ad={ad} className="transition-transform duration-500 group-hover:scale-[1.04]" />
         <div className="absolute inset-x-0 top-0 flex items-start justify-between p-2">
           <div className="flex flex-col gap-1">
@@ -157,7 +162,9 @@ export function AdCard({ ad, compact = false }: { ad: Ad; compact?: boolean }) {
           <Avatar name={seller.name} color={seller.avatarColor} size={18} />
           <span className="truncate text-[11px] font-medium text-muted">{seller.name}</span>
           {seller.verified && <BadgeCheck size={13} className="shrink-0 text-brand-500" />}
-          <span className="ml-auto shrink-0 text-[11px] text-muted">{ad.views.toLocaleString('en-IN')} views</span>
+          <span className="ml-auto shrink-0 text-[11px] text-muted">
+            {ad.views.toLocaleString('en-IN')} views
+          </span>
         </div>
       </div>
     </Link>

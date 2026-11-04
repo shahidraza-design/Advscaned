@@ -42,7 +42,11 @@ export default function Chats() {
     <div className="mx-auto max-w-3xl">
       <TopBar
         title="Chats"
-        subtitle={totalUnread ? `${totalUnread} unread message${totalUnread > 1 ? 's' : ''}` : 'All caught up'}
+        subtitle={
+          totalUnread
+            ? `${totalUnread} unread message${totalUnread > 1 ? 's' : ''}`
+            : 'All caught up'
+        }
       />
 
       <div className="px-4 pt-3">
@@ -73,7 +77,16 @@ export default function Chats() {
       ) : (
         <div className="mt-2 divide-hair">
           {rows.map(({ chat, ad, last, unread }) => (
-            <ChatRow key={chat.id} chatId={chat.id} adId={chat.adId} sellerId={chat.sellerId} unread={unread} lastText={last?.text ?? 'Say hello 👋'} lastAt={chat.lastMessageAt} sold={ad?.status === 'sold'} />
+            <ChatRow
+              key={chat.id}
+              chatId={chat.id}
+              adId={chat.adId}
+              sellerId={chat.sellerId}
+              unread={unread}
+              lastText={last?.text ?? 'Say hello 👋'}
+              lastAt={chat.lastMessageAt}
+              sold={ad?.status === 'sold'}
+            />
           ))}
         </div>
       )}
@@ -120,7 +133,12 @@ function ChatRow({
           </p>
           <span className="shrink-0 text-[10.5px] text-muted">{dayLabel(lastAt)}</span>
         </div>
-        <p className={cn('mt-0.5 truncate text-[12.5px]', unread ? 'font-medium text-[color:var(--text)]' : 'text-muted')}>
+        <p
+          className={cn(
+            'mt-0.5 truncate text-[12.5px]',
+            unread ? 'font-medium text-[color:var(--text)]' : 'text-muted',
+          )}
+        >
           {lastText}
         </p>
         {ad && (

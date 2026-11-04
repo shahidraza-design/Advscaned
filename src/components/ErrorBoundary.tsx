@@ -35,14 +35,11 @@ export class ErrorBoundary extends Component<Props, State> {
         </div>
         <h1 className="mt-4 text-[19px] font-extrabold tracking-tight">Something went wrong</h1>
         <p className="mt-1.5 max-w-sm text-[13px] leading-relaxed text-muted">
-          This screen hit an unexpected error. Your ads, chats and favourites are safe — try reloading
-          or heading back to the feed.
+          This screen hit an unexpected error. Your ads, chats and favourites are safe — try
+          reloading or heading back to the feed.
         </p>
         <div className="mt-5 flex gap-2">
-          <button
-            onClick={() => window.location.reload()}
-            className="btn btn-outline"
-          >
+          <button onClick={() => window.location.reload()} className="btn btn-outline">
             <RotateCcw size={15} /> Reload
           </button>
           <button onClick={() => window.location.assign('/')} className="btn btn-primary">

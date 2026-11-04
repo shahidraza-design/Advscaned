@@ -57,7 +57,10 @@ export default function Profile() {
         back="/"
         title="Account"
         right={
-          <Link to="/notifications" className="relative grid h-9 w-9 place-items-center rounded-full active:bg-ink-100 dark:active:bg-white/10">
+          <Link
+            to="/notifications"
+            className="relative grid h-9 w-9 place-items-center rounded-full active:bg-ink-100 dark:active:bg-white/10"
+          >
             <Bell size={19} />
             {unread > 0 && (
               <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-[color:var(--surface)]" />
@@ -103,7 +106,10 @@ export default function Profile() {
         </div>
 
         {/* Wallet / trust promo */}
-        <div className="mt-3 flex items-center gap-3 rounded-2xl border p-3.5 hairline" style={{ background: 'var(--surface)' }}>
+        <div
+          className="mt-3 flex items-center gap-3 rounded-2xl border p-3.5 hairline"
+          style={{ background: 'var(--surface)' }}
+        >
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-accent-500/15 text-accent-600 dark:text-accent-400">
             <Sparkles size={18} />
           </span>
@@ -125,8 +131,18 @@ export default function Profile() {
         <Section title="Activity">
           <Row to="/myads" icon={Package} label="My ads" hint={`${mine.length} posted`} />
           <Row to="/favorites" icon={Heart} label="Saved ads" hint={`${favorites.length} saved`} />
-          <Row to="/saved" icon={Search} label="Saved searches" hint={`${savedSearches.length} alerts`} />
-          <Row to="/chats" icon={MessageCircle} label="Chats" hint={`${chats.length} conversations`} />
+          <Row
+            to="/saved"
+            icon={Search}
+            label="Saved searches"
+            hint={`${savedSearches.length} alerts`}
+          />
+          <Row
+            to="/chats"
+            icon={MessageCircle}
+            label="Chats"
+            hint={`${chats.length} conversations`}
+          />
         </Section>
 
         {/* Preferences */}
@@ -141,7 +157,10 @@ export default function Profile() {
             </div>
             <Toggle checked={theme === 'dark'} onChange={toggleTheme} label="Dark mode" />
           </div>
-          <button onClick={() => setLocOpen(true)} className="flex w-full items-center gap-3 px-3.5 py-3 text-left">
+          <button
+            onClick={() => setLocOpen(true)}
+            className="flex w-full items-center gap-3 px-3.5 py-3 text-left"
+          >
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink-100 text-ink-600 dark:bg-white/10 dark:text-ink-200">
               <MapPin size={15} />
             </span>
@@ -170,7 +189,12 @@ export default function Profile() {
 
         {/* Support */}
         <Section title="Safety & support">
-          <Row icon={Shield} label="Safety centre" hint="How to trade safely" onClick={() => setHelpOpen(true)} />
+          <Row
+            icon={Shield}
+            label="Safety centre"
+            hint="How to trade safely"
+            onClick={() => setHelpOpen(true)}
+          />
           <Row icon={HelpCircle} label="Help centre" onClick={() => setHelpOpen(true)} />
           <Row icon={Info} label="About Bazaar" hint="v1.0.0" onClick={() => setHelpOpen(true)} />
         </Section>
@@ -239,17 +263,23 @@ export default function Profile() {
             stories. Bazaar staff will never ask for money.
           </p>
           <p className="font-bold text-[color:var(--text)]">Report a problem</p>
-          <p>Use the Report link on any ad or chat our trust team. We review every report within 24h.</p>
+          <p>
+            Use the Report link on any ad or chat our trust team. We review every report within 24h.
+          </p>
         </div>
-        <Link to="/search" onClick={() => setHelpOpen(false)} className="btn btn-primary mt-4 w-full">
+        <Link
+          to="/search"
+          onClick={() => setHelpOpen(false)}
+          className="btn btn-primary mt-4 w-full"
+        >
           Back to browsing
         </Link>
       </Sheet>
 
       <Sheet open={resetOpen} onClose={() => setResetOpen(false)} title="Reset demo data?">
         <p className="text-[13px] text-muted">
-          This restores the sample listings, chats and searches, and removes any ads you posted in this
-          demo. Your account stays signed in.
+          This restores the sample listings, chats and searches, and removes any ads you posted in
+          this demo. Your account stays signed in.
         </p>
         <div className="mt-4 flex gap-2">
           <button onClick={() => setResetOpen(false)} className="btn btn-outline flex-1">
@@ -274,8 +304,13 @@ export default function Profile() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mt-4">
-      <p className="mb-1.5 px-1 text-[11px] font-bold uppercase tracking-widest text-muted">{title}</p>
-      <div className="divide-hair overflow-hidden rounded-2xl border hairline" style={{ background: 'var(--surface)' }}>
+      <p className="mb-1.5 px-1 text-[11px] font-bold uppercase tracking-widest text-muted">
+        {title}
+      </p>
+      <div
+        className="divide-hair overflow-hidden rounded-2xl border hairline"
+        style={{ background: 'var(--surface)' }}
+      >
         {children}
       </div>
     </section>

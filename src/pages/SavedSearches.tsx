@@ -40,7 +40,10 @@ export default function SavedSearchesPage() {
             return (
               <div key={s.id} className="card p-3.5">
                 <div className="flex items-start justify-between gap-2">
-                  <Link to={`/search?q=${encodeURIComponent(s.query)}${s.category ? `&cat=${s.category}` : ''}${s.maxPrice ? `&max=${s.maxPrice}` : ''}`} className="min-w-0 flex-1">
+                  <Link
+                    to={`/search?q=${encodeURIComponent(s.query)}${s.category ? `&cat=${s.category}` : ''}${s.maxPrice ? `&max=${s.maxPrice}` : ''}`}
+                    className="min-w-0 flex-1"
+                  >
                     <p className="truncate text-[14px] font-bold">{s.label}</p>
                     <p className="mt-0.5 flex flex-wrap items-center gap-x-2 text-[11.5px] text-muted">
                       {s.category && <span>{categoryById(s.category)?.plural}</span>}
@@ -65,7 +68,11 @@ export default function SavedSearchesPage() {
                   </span>
                   <label className="flex items-center gap-2 text-[11.5px] text-muted">
                     {s.alerts ? <Bell size={12} /> : <BellOff size={12} />} Alerts
-                    <Toggle checked={s.alerts} onChange={() => toggleAlerts(s.id)} label={`Alerts for ${s.label}`} />
+                    <Toggle
+                      checked={s.alerts}
+                      onChange={() => toggleAlerts(s.id)}
+                      label={`Alerts for ${s.label}`}
+                    />
                   </label>
                 </div>
               </div>

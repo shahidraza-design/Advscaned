@@ -109,8 +109,10 @@ export default function Login() {
               {step === 'name' ? 'One last thing' : 'Buy better.\nSell faster.'}
             </h1>
             <p className="mt-1.5 max-w-xs text-[12.5px] leading-relaxed text-white/70">
-              {step === 'phone' && 'Join 12,000+ people trading second-hand in Kolkata. Free to post, free to browse.'}
-              {step === 'otp' && `We sent a 4-digit code to +91 ${phone.slice(0, 5)} ${phone.slice(5)}.`}
+              {step === 'phone' &&
+                'Join 12,000+ people trading second-hand in Kolkata. Free to post, free to browse.'}
+              {step === 'otp' &&
+                `We sent a 4-digit code to +91 ${phone.slice(0, 5)} ${phone.slice(5)}.`}
               {step === 'name' && 'Tell us your name so buyers know who they are dealing with.'}
             </p>
           </div>
@@ -135,7 +137,11 @@ export default function Login() {
                 />
               </div>
               {error && <p className="mt-1.5 text-[12px] font-medium text-rose-600">{error}</p>}
-              <button onClick={sendOtp} disabled={busy} className="btn btn-primary mt-4 w-full py-3.5">
+              <button
+                onClick={sendOtp}
+                disabled={busy}
+                className="btn btn-primary mt-4 w-full py-3.5"
+              >
                 {busy ? 'Sending…' : 'Continue'} <ArrowRight size={17} />
               </button>
               <p className="mt-3 text-center text-[11px] leading-relaxed text-muted">
@@ -163,11 +169,18 @@ export default function Login() {
                 ))}
               </div>
               {error && <p className="mt-1.5 text-[12px] font-medium text-rose-600">{error}</p>}
-              <button onClick={() => verify()} disabled={busy} className="btn btn-primary mt-4 w-full py-3.5">
+              <button
+                onClick={() => verify()}
+                disabled={busy}
+                className="btn btn-primary mt-4 w-full py-3.5"
+              >
                 {busy ? 'Verifying…' : 'Verify & continue'}
               </button>
               <div className="mt-3 flex items-center justify-between text-[12px]">
-                <button onClick={() => setStep('phone')} className="flex items-center gap-1 font-semibold text-muted">
+                <button
+                  onClick={() => setStep('phone')}
+                  className="flex items-center gap-1 font-semibold text-muted"
+                >
                   <ChevronLeft size={14} /> Change number
                 </button>
                 <button
@@ -221,9 +234,14 @@ export default function Login() {
               { icon: MessageSquare, label: 'In-app chat' },
               { icon: Zap, label: 'Instant posting' },
             ].map(({ icon: Icon, label }) => (
-              <div key={label} className="flex flex-col items-center gap-1.5 rounded-xl border py-3 hairline">
+              <div
+                key={label}
+                className="flex flex-col items-center gap-1.5 rounded-xl border py-3 hairline"
+              >
                 <Icon size={17} className="text-brand-600 dark:text-brand-400" />
-                <span className="text-center text-[10px] font-semibold leading-tight text-muted">{label}</span>
+                <span className="text-center text-[10px] font-semibold leading-tight text-muted">
+                  {label}
+                </span>
               </div>
             ))}
           </div>

@@ -119,4 +119,7 @@ export interface SessionUser {
   joined: number;
 }
 
-export const CATEGORY_ATTRS: Record<string, { key: string; label: string; options?: string[]; type?: 'text' | 'number' }[]> = {};
+export const CATEGORY_ATTRS: Record<
+  string,
+  { key: string; label: string; options?: string[]; type?: 'text' | 'number' }[]
+> = {};

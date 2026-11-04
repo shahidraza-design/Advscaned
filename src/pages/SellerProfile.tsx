@@ -1,5 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { BadgeCheck, CalendarDays, MessageCircle, MapPin, Star, ThumbsUp, Clock } from 'lucide-react';
+import {
+  BadgeCheck,
+  CalendarDays,
+  MessageCircle,
+  MapPin,
+  Star,
+  ThumbsUp,
+  Clock,
+} from 'lucide-react';
 import { TopBar } from '../components/TopBar';
 import { AdCard } from '../components/AdCard';
 import { Avatar, EmptyState } from '../components/ui';
@@ -51,7 +59,9 @@ export default function SellerProfile() {
               </p>
             </div>
           </div>
-          {seller.bio && <p className="relative mt-3 text-[12px] leading-relaxed text-white/75">{seller.bio}</p>}
+          {seller.bio && (
+            <p className="relative mt-3 text-[12px] leading-relaxed text-white/75">{seller.bio}</p>
+          )}
           <div className="relative mt-3 grid grid-cols-3 divide-x divide-white/15 rounded-xl bg-white/10 py-2 backdrop-blur">
             {[
               [listings.length, 'Live ads'],
@@ -78,7 +88,11 @@ export default function SellerProfile() {
 
         <h2 className="mb-2 mt-6 text-[15px] font-bold">Listings by {seller.name.split(' ')[0]}</h2>
         {listings.length === 0 ? (
-          <EmptyState icon={<MapPin size={24} />} title="No live ads" body="This seller has no active listings right now." />
+          <EmptyState
+            icon={<MapPin size={24} />}
+            title="No live ads"
+            body="This seller has no active listings right now."
+          />
         ) : (
           <div className="grid grid-cols-2 gap-3 pb-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-4">
             {listings.map((ad) => (
@@ -87,7 +101,10 @@ export default function SellerProfile() {
           </div>
         )}
 
-        <div className="mb-6 rounded-2xl border p-4 hairline" style={{ background: 'var(--surface)' }}>
+        <div
+          className="mb-6 rounded-2xl border p-4 hairline"
+          style={{ background: 'var(--surface)' }}
+        >
           <p className="flex items-center gap-1.5 text-[13px] font-bold">
             <Clock size={14} className="text-brand-500" /> Response behaviour
           </p>

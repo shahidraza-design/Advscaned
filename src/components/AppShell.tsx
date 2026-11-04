@@ -98,7 +98,9 @@ function DesktopHeader() {
             className={({ isActive }) =>
               cn(
                 'rounded-lg px-3 py-2 text-[13.5px] font-semibold transition-colors',
-                isActive ? 'text-brand-700 dark:text-brand-300' : 'text-ink-600 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-white/5',
+                isActive
+                  ? 'text-brand-700 dark:text-brand-300'
+                  : 'text-ink-600 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-white/5',
               )
             }
           >
@@ -109,7 +111,9 @@ function DesktopHeader() {
             className={({ isActive }) =>
               cn(
                 'relative flex items-center gap-1.5 rounded-lg px-3 py-2 text-[13.5px] font-semibold transition-colors',
-                isActive ? 'text-brand-700 dark:text-brand-300' : 'text-ink-600 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-white/5',
+                isActive
+                  ? 'text-brand-700 dark:text-brand-300'
+                  : 'text-ink-600 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-white/5',
               )
             }
           >
@@ -125,7 +129,9 @@ function DesktopHeader() {
             className={({ isActive }) =>
               cn(
                 'rounded-lg px-3 py-2 text-[13.5px] font-semibold transition-colors',
-                isActive ? 'text-brand-700 dark:text-brand-300' : 'text-ink-600 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-white/5',
+                isActive
+                  ? 'text-brand-700 dark:text-brand-300'
+                  : 'text-ink-600 hover:bg-ink-50 dark:text-ink-200 dark:hover:bg-white/5',
               )
             }
           >
@@ -162,9 +168,7 @@ function DesktopHeader() {
 /* ------------------------------ Offline banner ---------------------------- */
 
 function ConnectionBanner() {
-  const [online, setOnline] = useState(
-    typeof navigator === 'undefined' ? true : navigator.onLine,
-  );
+  const [online, setOnline] = useState(typeof navigator === 'undefined' ? true : navigator.onLine);
 
   useEffect(() => {
     const goOnline = () => {
@@ -232,7 +236,11 @@ function Toaster() {
               {t.action.label}
             </button>
           )}
-          <button onClick={() => dismiss(t.id)} aria-label="Dismiss" className="shrink-0 opacity-50">
+          <button
+            onClick={() => dismiss(t.id)}
+            aria-label="Dismiss"
+            className="shrink-0 opacity-50"
+          >
             <X size={14} />
           </button>
         </div>

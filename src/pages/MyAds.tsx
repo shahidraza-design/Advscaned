@@ -1,6 +1,17 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart3, Eye, Heart, MessageCircle, PackageOpen, Pencil, Plus, Sparkles, Trash2, Zap } from 'lucide-react';
+import {
+  BarChart3,
+  Eye,
+  Heart,
+  MessageCircle,
+  PackageOpen,
+  Pencil,
+  Plus,
+  Sparkles,
+  Trash2,
+  Zap,
+} from 'lucide-react';
 import { TopBar } from '../components/TopBar';
 import { AdThumb } from '../components/AdCard';
 import { Badge, EmptyState, Sheet } from '../components/ui';
@@ -71,7 +82,11 @@ export default function MyAds() {
 
         <div className="no-scrollbar -mx-4 mt-4 flex gap-2 overflow-x-auto px-4">
           {TABS.map((t) => (
-            <button key={t.id} onClick={() => setTab(t.id)} className={cn('chip', tab === t.id && 'chip-on')}>
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={cn('chip', tab === t.id && 'chip-on')}
+            >
               {t.label}
               <span className="text-[10px] opacity-60">
                 {t.id === 'all' ? mine.length : mine.filter((a) => a.status === t.id).length}
@@ -113,7 +128,15 @@ export default function MyAds() {
                         <p className="text-[15px] font-extrabold">{inr(ad.price)}</p>
                         <p className="truncate text-[12.5px] font-medium">{ad.title}</p>
                       </div>
-                      <Badge tone={ad.status === 'active' ? 'brand' : ad.status === 'sold' ? 'red' : 'neutral'}>
+                      <Badge
+                        tone={
+                          ad.status === 'active'
+                            ? 'brand'
+                            : ad.status === 'sold'
+                              ? 'red'
+                              : 'neutral'
+                        }
+                      >
                         {ad.status === 'active' ? 'Live' : ad.status === 'sold' ? 'Sold' : 'Draft'}
                       </Badge>
                     </div>
@@ -145,7 +168,10 @@ export default function MyAds() {
                   <button
                     onClick={() => {
                       updateAd(ad.id, { status: ad.status === 'sold' ? 'active' : 'sold' });
-                      toast(ad.status === 'sold' ? 'Ad is live again' : 'Marked as sold 🎉', 'success');
+                      toast(
+                        ad.status === 'sold' ? 'Ad is live again' : 'Marked as sold 🎉',
+                        'success',
+                      );
                     }}
                     className="flex flex-1 items-center justify-center gap-1 rounded-lg bg-ink-100 py-2 text-[11.5px] font-bold dark:bg-white/10"
                   >
@@ -176,8 +202,8 @@ export default function MyAds() {
               <Sparkles size={14} className="text-accent-500" /> Sell 3× faster with a boost
             </p>
             <p className="mt-1 text-[11.5px] leading-relaxed text-muted">
-              Boosted ads appear at the top of nearby searches and in the “Featured today” rail for 7
-              days. Demo only — no real payment is taken.
+              Boosted ads appear at the top of nearby searches and in the “Featured today” rail for
+              7 days. Demo only — no real payment is taken.
             </p>
           </div>
         )}
@@ -185,7 +211,9 @@ export default function MyAds() {
 
       <Sheet open={!!boostTarget} onClose={() => setBoostTarget(null)} title="Boost this ad">
         <div className="rounded-2xl bg-gradient-to-br from-accent-500 to-orange-600 p-4 text-white">
-          <p className="text-[11px] font-bold uppercase tracking-widest text-white/80">7-day boost</p>
+          <p className="text-[11px] font-bold uppercase tracking-widest text-white/80">
+            7-day boost
+          </p>
           <p className="mt-1 text-[26px] font-extrabold">₹149</p>
           <p className="text-[12px] text-white/80">Featured placement + 3× more views</p>
         </div>

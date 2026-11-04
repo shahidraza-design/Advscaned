@@ -48,7 +48,10 @@ export function suggestPrice(input: {
     return s.length % 2 ? s[mid] : Math.round((s[mid - 1] + s[mid]) / 2);
   };
   const base = median(comparables.map((a) => a.price));
-  const tokens = input.title.toLowerCase().split(/\s+/).filter((t) => t.length > 3);
+  const tokens = input.title
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((t) => t.length > 3);
   const matchBonus = comparables.filter((a) =>
     tokens.some((t) => a.title.toLowerCase().includes(t)),
   );
@@ -111,7 +114,9 @@ export function suggestTitles(category: CategoryId, attributes: Record<string, s
     .trim();
   const out = new Set<string>();
   if (base) out.add(base);
-  out.add(`${meta.name} · ${attributes.fuel ? attributes.fuel + ' · ' : ''}${attributes.km ? attributes.km + ' km · ' : ''}Excellent condition`);
+  out.add(
+    `${meta.name} · ${attributes.fuel ? attributes.fuel + ' · ' : ''}${attributes.km ? attributes.km + ' km · ' : ''}Excellent condition`,
+  );
   out.add(`${meta.name} for sale · ${attributes.owners ?? attributes.furnishing ?? 'Well kept'}`);
   return Array.from(out).slice(0, 3);
 }
@@ -128,7 +133,8 @@ export function rankAds<T extends Ad>(ads: T[], query: string, userArea: string)
   const tokens = q.split(/\s+/).filter(Boolean);
   return [...ads]
     .map((ad) => {
-      const hay = `${ad.title} ${ad.description} ${ad.attributes ? Object.values(ad.attributes).join(' ') : ''}`.toLowerCase();
+      const hay =
+        `${ad.title} ${ad.description} ${ad.attributes ? Object.values(ad.attributes).join(' ') : ''}`.toLowerCase();
       let score = 0;
       tokens.forEach((t) => {
         if (ad.title.toLowerCase().includes(t)) score += 12;

@@ -389,16 +389,28 @@ export const SEED_CHATS = (): Chat[] => {
   return [
     mk('chat-1', 'ad-3', 'u2', [
       { from: 'me', text: 'Hi! Is the iPhone 13 still available?', minsAgo: 190 },
-      { from: 'them', text: 'Yes it is. Battery health is 89%, everything works perfectly.', minsAgo: 186 },
+      {
+        from: 'them',
+        text: 'Yes it is. Battery health is 89%, everything works perfectly.',
+        minsAgo: 186,
+      },
       { from: 'me', text: 'Can you do ₹32,000? I can pick up today evening.', minsAgo: 180 },
-      { from: 'them', text: '₹33,000 and it is yours. I also have the box and a spare charger.', minsAgo: 174 },
+      {
+        from: 'them',
+        text: '₹33,000 and it is yours. I also have the box and a spare charger.',
+        minsAgo: 174,
+      },
     ]),
     mk('chat-2', 'ad-1', 'u1', [
       { from: 'me', text: 'Is the Honda City price negotiable?', minsAgo: 60 },
       { from: 'them', text: 'Slightly. Are you paying full cash or financing?', minsAgo: 52 },
     ]),
     mk('chat-3', 'ad-7', 'u5', [
-      { from: 'them', text: 'The flat is available from 1 Dec. Let me know if you want a visit this weekend.', minsAgo: 1440 },
+      {
+        from: 'them',
+        text: 'The flat is available from 1 Dec. Let me know if you want a visit this weekend.',
+        minsAgo: 1440,
+      },
     ]),
   ];
 };

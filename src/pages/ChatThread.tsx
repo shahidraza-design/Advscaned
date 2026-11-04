@@ -72,7 +72,11 @@ export default function ChatThread() {
   const sendOffer = () => {
     const amt = Number(offer.replace(/\D/g, ''));
     if (!amt) return;
-    sendMessage(chat.id, `I'd like to offer ₹${amt.toLocaleString('en-IN')} — is that workable?`, 'offer');
+    sendMessage(
+      chat.id,
+      `I'd like to offer ₹${amt.toLocaleString('en-IN')} — is that workable?`,
+      'offer',
+    );
     setOfferOpen(false);
     setOffer('');
     setTyping(true);
@@ -298,7 +302,9 @@ export default function ChatThread() {
           {ad ? `Asking price ${inr(ad.price)}.` : ''} Offers within 10% get the best responses.
         </p>
         <div className="relative mt-3">
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[15px] text-muted">₹</span>
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[15px] text-muted">
+            ₹
+          </span>
           <input
             value={offer}
             onChange={(e) => setOffer(e.target.value)}

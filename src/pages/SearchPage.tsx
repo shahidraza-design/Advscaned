@@ -123,7 +123,19 @@ export default function SearchPage() {
           (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || b.saves - a.saves,
         );
     }
-  }, [ads, cat, q, minPrice, maxPrice, conditions, maxDistance, verifiedOnly, withPhotos, sort, area]);
+  }, [
+    ads,
+    cat,
+    q,
+    minPrice,
+    maxPrice,
+    conditions,
+    maxDistance,
+    verifiedOnly,
+    withPhotos,
+    sort,
+    area,
+  ]);
 
   const suggestions = useMemo(() => {
     const term = input.trim().toLowerCase();
@@ -135,7 +147,14 @@ export default function SearchPage() {
         c.keywords.some((k) => k.includes(term)),
     )
       .slice(0, 2)
-      .map((c) => ({ kind: 'cat' as const, id: c.id, label: c.plural, sub: 'Category', tint: c.tint, emoji: c.emoji }));
+      .map((c) => ({
+        kind: 'cat' as const,
+        id: c.id,
+        label: c.plural,
+        sub: 'Category',
+        tint: c.tint,
+        emoji: c.emoji,
+      }));
     const titles = ads
       .filter((a) => a.status === 'active' && a.title.toLowerCase().includes(term))
       .slice(0, 4)
@@ -167,7 +186,9 @@ export default function SearchPage() {
 
   const saveSearch = () => {
     addSavedSearch({
-      label: q ? `${q}${cat ? ` in ${categoryById(cat)?.plural}` : ''}` : `All ${cat ? categoryById(cat)?.plural : 'ads'} in ${area}`,
+      label: q
+        ? `${q}${cat ? ` in ${categoryById(cat)?.plural}` : ''}`
+        : `All ${cat ? categoryById(cat)?.plural : 'ads'} in ${area}`,
       query: q,
       category: cat,
       maxPrice: maxPrice,
@@ -198,7 +219,9 @@ export default function SearchPage() {
               onClick={() => setSheet('filter')}
               className={cn(
                 'relative flex items-center gap-1.5 rounded-full border px-3 py-2 text-[12.5px] font-semibold hairline',
-                activeFilterCount ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300' : '',
+                activeFilterCount
+                  ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-500/10 dark:text-brand-300'
+                  : '',
               )}
             >
               <SlidersHorizontal size={14} /> Filters
@@ -274,7 +297,13 @@ export default function SearchPage() {
                   className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left transition-colors hover:bg-ink-50 dark:hover:bg-white/5"
                 >
                   <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-ink-100 text-[13px] dark:bg-white/10">
-                    {sg.kind === 'cat' ? sg.emoji : sg.kind === 'ad' ? <Search size={13} /> : <Sparkles size={13} />}
+                    {sg.kind === 'cat' ? (
+                      sg.emoji
+                    ) : sg.kind === 'ad' ? (
+                      <Search size={13} />
+                    ) : (
+                      <Sparkles size={13} />
+                    )}
                   </span>
                   <span className="min-w-0 flex-1">
                     <span className="block truncate text-[13px] font-medium">{sg.label}</span>
@@ -288,7 +317,10 @@ export default function SearchPage() {
         </form>
 
         <div className="no-scrollbar -mx-4 mt-2 flex gap-2 overflow-x-auto px-4">
-          <button onClick={() => patch({ cat: undefined })} className={cn('chip', !cat && 'chip-on')}>
+          <button
+            onClick={() => patch({ cat: undefined })}
+            className={cn('chip', !cat && 'chip-on')}
+          >
             All
           </button>
           {CATEGORIES.map((c) => (
@@ -311,21 +343,31 @@ export default function SearchPage() {
               <FilterPill onClear={() => patch({ min: undefined })}>Min {inr(minPrice)}</FilterPill>
             ) : null}
             {maxPrice ? (
-              <FilterPill onClear={() => patch({ max: undefined })}>Under {inr(maxPrice)}</FilterPill>
+              <FilterPill onClear={() => patch({ max: undefined })}>
+                Under {inr(maxPrice)}
+              </FilterPill>
             ) : null}
             {conditions.map((c) => (
               <FilterPill
                 key={c}
-                onClear={() => patch({ cond: conditions.filter((x) => x !== c).join(',') || undefined })}
+                onClear={() =>
+                  patch({ cond: conditions.filter((x) => x !== c).join(',') || undefined })
+                }
               >
                 {CONDITIONS.find((x) => x.id === c)?.label}
               </FilterPill>
             ))}
             {maxDistance ? (
-              <FilterPill onClear={() => patch({ dist: undefined })}>Within {maxDistance} km</FilterPill>
+              <FilterPill onClear={() => patch({ dist: undefined })}>
+                Within {maxDistance} km
+              </FilterPill>
             ) : null}
-            {verifiedOnly ? <FilterPill onClear={() => patch({ verified: undefined })}>Verified</FilterPill> : null}
-            {withPhotos ? <FilterPill onClear={() => patch({ photos: undefined })}>With photos</FilterPill> : null}
+            {verifiedOnly ? (
+              <FilterPill onClear={() => patch({ verified: undefined })}>Verified</FilterPill>
+            ) : null}
+            {withPhotos ? (
+              <FilterPill onClear={() => patch({ photos: undefined })}>With photos</FilterPill>
+            ) : null}
             <button onClick={clearAll} className="px-1.5 text-[12px] font-semibold text-brand-600">
               Clear all
             </button>
@@ -431,7 +473,14 @@ export default function SearchPage() {
           <div className="flex gap-2">
             <button
               onClick={() => {
-                setDraft({ min: 0, max: 200000, conditions: [], distance: 30, verifiedOnly: false, withPhotos: false });
+                setDraft({
+                  min: 0,
+                  max: 200000,
+                  conditions: [],
+                  distance: 30,
+                  verifiedOnly: false,
+                  withPhotos: false,
+                });
                 clearAll();
               }}
               className="btn btn-outline flex-1"
@@ -449,7 +498,9 @@ export default function SearchPage() {
             <p className="label">Price range</p>
             <div className="flex items-center gap-2">
               <div className="relative flex-1">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] text-muted">₹</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] text-muted">
+                  ₹
+                </span>
                 <input
                   type="number"
                   value={draft.min || ''}
@@ -460,11 +511,15 @@ export default function SearchPage() {
               </div>
               <span className="text-muted">—</span>
               <div className="relative flex-1">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] text-muted">₹</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[12px] text-muted">
+                  ₹
+                </span>
                 <input
                   type="number"
                   value={draft.max >= 200000 ? '' : draft.max}
-                  onChange={(e) => setDraft((d) => ({ ...d, max: Number(e.target.value) || 200000 }))}
+                  onChange={(e) =>
+                    setDraft((d) => ({ ...d, max: Number(e.target.value) || 200000 }))
+                  }
                   placeholder="Max"
                   className="input py-2.5 pl-6 text-[13.5px]"
                 />
@@ -494,7 +549,9 @@ export default function SearchPage() {
                     onClick={() =>
                       setDraft((d) => ({
                         ...d,
-                        conditions: on ? d.conditions.filter((x) => x !== c.id) : [...d.conditions, c.id],
+                        conditions: on
+                          ? d.conditions.filter((x) => x !== c.id)
+                          : [...d.conditions, c.id],
                       }))
                     }
                     className={cn('chip', on && 'chip-on')}
@@ -528,13 +585,21 @@ export default function SearchPage() {
               <span className="flex items-center gap-2 text-[13.5px] font-medium">
                 <BadgeCheck size={15} className="text-brand-500" /> Verified sellers only
               </span>
-              <Toggle checked={draft.verifiedOnly} onChange={(v) => setDraft((d) => ({ ...d, verifiedOnly: v }))} label="Verified sellers only" />
+              <Toggle
+                checked={draft.verifiedOnly}
+                onChange={(v) => setDraft((d) => ({ ...d, verifiedOnly: v }))}
+                label="Verified sellers only"
+              />
             </label>
             <label className="flex items-center justify-between px-3.5 py-3">
               <span className="flex items-center gap-2 text-[13.5px] font-medium">
                 <Camera size={15} className="text-brand-500" /> Only ads with photos
               </span>
-              <Toggle checked={draft.withPhotos} onChange={(v) => setDraft((d) => ({ ...d, withPhotos: v }))} label="Only ads with photos" />
+              <Toggle
+                checked={draft.withPhotos}
+                onChange={(v) => setDraft((d) => ({ ...d, withPhotos: v }))}
+                label="Only ads with photos"
+              />
             </label>
           </div>
         </div>

@@ -30,6 +30,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 ## 2. Feature set
 
 ### Discovery & browsing
+
 - **Home feed** with location-aware recommendations, category grid, featured rail, "fresh / near you / under ₹35k / top picks" tabs, trending searches and recent views.
 - **Search** with URL-shareable state: query, category, price range, condition, distance, verified-only, photo-only.
 - **Relevance ranking** that blends text match, freshness, locality, demand signals and promotions.
@@ -39,12 +40,14 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - **Empty states**, skeleton-free instant filtering (data is local), and 4/3/2-column responsive grids.
 
 ### Listings
+
 - Rich **ad detail page**: swipeable gallery + full-screen photo viewer, condition/category badges, specifications table, description expand, map-style location card, safety guidance, view counts, similar ads.
 - **Price intelligence**: comparable-listing analysis tells buyers/sellers whether a price is above or below market, with confidence and the comps used.
 - **Seller card** with rating, verified badge, response rate, member-since and a full **seller profile** page.
 - **Report ad**, **share** (Web Share API with clipboard fallback), **favourite**, **views tracking**.
 
 ### Selling
+
 - **4-step posting wizard**: category → details → location → review.
 - **Photo upload** with automatic client-side resize/compression (6 photos, cover selection).
 - **Dynamic category fields** (fuel, transmission, BHK, storage, breed, …) per category.
@@ -52,12 +55,14 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - Negotiable flag, delivery flag, location picker, draft saving, live preview before publish.
 
 ### Messaging & deals
+
 - **Chat threads** with ad context, quick replies, typing indicator, read receipts, unread badges and day separators.
 - **Make an offer** flow (pre-filled suggestions) that posts a structured offer message.
 - **Phone reveal** with masking, plus safety reminders and reporting.
 - Chat list with search, previews and per-chat badges.
 
 ### Account & growth
+
 - **Phone + OTP sign-in** (simulated), name + area onboarding, guest browsing with auth gates.
 - **My ads** dashboard: views/saves/live stats, mark sold, relist, delete, drafts.
 - **Boost** flow (simulated checkout) → featured placement + notification.
@@ -70,17 +75,17 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 
 ## 3. Tech stack
 
-| Layer | Choice | Why |
-| --- | --- | --- |
-| UI | **React 18 + TypeScript** | Typed, component-driven, fast iteration |
-| Build | **Vite 5** | Instant HMR, tiny config, great PWA story |
-| Styling | **Tailwind CSS 3.4** + CSS custom-property design tokens | Consistent theming, dark mode, zero runtime CSS cost |
-| State | **Zustand** + `persist` middleware | One small store, localStorage persistence, no boilerplate |
-| Routing | **React Router 6** | Nested shell + auth guards + shareable query state |
-| Motion | **Framer Motion** | Sheet transitions, micro-interactions |
-| Icons | **Lucide** | Consistent 2px iconography |
-| Native | **Capacitor 7** | Wraps the same build into an Android APK |
-| Quality | `tsc --noEmit`, custom jsdom smoke test | Route-level render verification |
+| Layer   | Choice                                                   | Why                                                       |
+| ------- | -------------------------------------------------------- | --------------------------------------------------------- |
+| UI      | **React 18 + TypeScript**                                | Typed, component-driven, fast iteration                   |
+| Build   | **Vite 5**                                               | Instant HMR, tiny config, great PWA story                 |
+| Styling | **Tailwind CSS 3.4** + CSS custom-property design tokens | Consistent theming, dark mode, zero runtime CSS cost      |
+| State   | **Zustand** + `persist` middleware                       | One small store, localStorage persistence, no boilerplate |
+| Routing | **React Router 6**                                       | Nested shell + auth guards + shareable query state        |
+| Motion  | **Framer Motion**                                        | Sheet transitions, micro-interactions                     |
+| Icons   | **Lucide**                                               | Consistent 2px iconography                                |
+| Native  | **Capacitor 7**                                          | Wraps the same build into an Android APK                  |
+| Quality | `tsc --noEmit`, custom jsdom smoke test                  | Route-level render verification                           |
 
 No backend is required to run the demo — the store acts as an offline repository so every flow is fully functional. Swapping in a real API means replacing the store actions (`src/lib/store.ts`) with fetch calls; the shapes in `src/lib/types.ts` are already API-ready.
 

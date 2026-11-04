@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { AppShell } from './components/AppShell';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { useStore } from './lib/store';
 import Home from './pages/Home';
 import SearchPage from './pages/SearchPage';
@@ -35,7 +36,8 @@ export default function App() {
   }, [theme]);
 
   return (
-    <Routes>
+    <ErrorBoundary>
+      <Routes>
       <Route element={<AppShell />}>
         <Route index element={<Home />} />
         <Route path="search" element={<SearchPage />} />
@@ -101,6 +103,7 @@ export default function App() {
         <Route path="notifications" element={<Notifications />} />
         <Route path="*" element={<NotFound />} />
       </Route>
-    </Routes>
+      </Routes>
+    </ErrorBoundary>
   );
 }

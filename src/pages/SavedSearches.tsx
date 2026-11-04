@@ -65,7 +65,7 @@ export default function SavedSearchesPage() {
                   </span>
                   <label className="flex items-center gap-2 text-[11.5px] text-muted">
                     {s.alerts ? <Bell size={12} /> : <BellOff size={12} />} Alerts
-                    <Toggle checked={s.alerts} onChange={() => toggleAlerts(s.id)} />
+                    <Toggle checked={s.alerts} onChange={() => toggleAlerts(s.id)} label={`Alerts for ${s.label}`} />
                   </label>
                 </div>
               </div>

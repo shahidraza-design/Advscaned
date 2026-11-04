@@ -5,6 +5,7 @@ import {
   BadgeCheck,
   BellPlus,
   Camera,
+  CornerDownLeft,
   MapPin,
   Search,
   SlidersHorizontal,
@@ -55,6 +56,7 @@ export default function SearchPage() {
 
   const [input, setInput] = useState(q);
   const [sheet, setSheet] = useState<null | 'filter' | 'sort'>(null);
+  const [focused, setFocused] = useState(false);
   const [draft, setDraft] = useState({
     min: minPrice ?? 0,
     max: maxPrice ?? 200000,
@@ -122,6 +124,29 @@ export default function SearchPage() {
         );
     }
   }, [ads, cat, q, minPrice, maxPrice, conditions, maxDistance, verifiedOnly, withPhotos, sort, area]);
+
+  const suggestions = useMemo(() => {
+    const term = input.trim().toLowerCase();
+    if (term.length < 1) return [];
+    const cats = CATEGORIES.filter(
+      (c) =>
+        c.plural.toLowerCase().includes(term) ||
+        c.name.toLowerCase().includes(term) ||
+        c.keywords.some((k) => k.includes(term)),
+    )
+      .slice(0, 2)
+      .map((c) => ({ kind: 'cat' as const, id: c.id, label: c.plural, sub: 'Category', tint: c.tint, emoji: c.emoji }));
+    const titles = ads
+      .filter((a) => a.status === 'active' && a.title.toLowerCase().includes(term))
+      .slice(0, 4)
+      .map((a) => ({ kind: 'ad' as const, id: a.id, label: a.title, sub: inr(a.price) }));
+    const terms = TRENDING_SEARCHES.filter(
+      (t) => t.toLowerCase().includes(term) && t.toLowerCase() !== term,
+    )
+      .slice(0, 2)
+      .map((t) => ({ kind: 'term' as const, id: t, label: t, sub: 'Popular search' }));
+    return [...cats, ...titles, ...terms].slice(0, 7);
+  }, [input, ads]);
 
   const applyFilters = () => {
     patch({
@@ -209,6 +234,8 @@ export default function SearchPage() {
             placeholder="Search in Kolkata"
             className="input py-2.5 pl-10 pr-10 text-[14px]"
             autoFocus={false}
+            onFocus={() => setFocused(true)}
+            onBlur={() => window.setTimeout(() => setFocused(false), 120)}
           />
           {input && (
             <button
@@ -222,6 +249,41 @@ export default function SearchPage() {
             >
               <X size={13} />
             </button>
+          )}
+
+          {focused && suggestions.length > 0 && (
+            <div
+              className="absolute inset-x-0 top-full z-50 mt-1.5 overflow-hidden rounded-xl border shadow-float animate-fade-in hairline"
+              style={{ background: 'var(--surface)' }}
+              onMouseDown={(e) => e.preventDefault()}
+            >
+              {suggestions.map((sg) => (
+                <button
+                  key={`${sg.kind}-${sg.id}`}
+                  onClick={() => {
+                    setFocused(false);
+                    if (sg.kind === 'ad') navigate(`/ad/${sg.id}`);
+                    else if (sg.kind === 'cat') {
+                      setInput('');
+                      patch({ cat: sg.id as CategoryId, q: undefined });
+                    } else {
+                      setInput(sg.id);
+                      patch({ q: sg.id });
+                    }
+                  }}
+                  className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left transition-colors hover:bg-ink-50 dark:hover:bg-white/5"
+                >
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-ink-100 text-[13px] dark:bg-white/10">
+                    {sg.kind === 'cat' ? sg.emoji : sg.kind === 'ad' ? <Search size={13} /> : <Sparkles size={13} />}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[13px] font-medium">{sg.label}</span>
+                    <span className="block truncate text-[10.5px] text-muted">{sg.sub}</span>
+                  </span>
+                  <CornerDownLeft size={13} className="shrink-0 text-muted" />
+                </button>
+              ))}
+            </div>
           )}
         </form>
 
@@ -466,13 +528,13 @@ export default function SearchPage() {
               <span className="flex items-center gap-2 text-[13.5px] font-medium">
                 <BadgeCheck size={15} className="text-brand-500" /> Verified sellers only
               </span>
-              <Toggle checked={draft.verifiedOnly} onChange={(v) => setDraft((d) => ({ ...d, verifiedOnly: v }))} />
+              <Toggle checked={draft.verifiedOnly} onChange={(v) => setDraft((d) => ({ ...d, verifiedOnly: v }))} label="Verified sellers only" />
             </label>
             <label className="flex items-center justify-between px-3.5 py-3">
               <span className="flex items-center gap-2 text-[13.5px] font-medium">
                 <Camera size={15} className="text-brand-500" /> Only ads with photos
               </span>
-              <Toggle checked={draft.withPhotos} onChange={(v) => setDraft((d) => ({ ...d, withPhotos: v }))} />
+              <Toggle checked={draft.withPhotos} onChange={(v) => setDraft((d) => ({ ...d, withPhotos: v }))} label="Only ads with photos" />
             </label>
           </div>
         </div>

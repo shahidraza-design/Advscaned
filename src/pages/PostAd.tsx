@@ -376,7 +376,7 @@ export default function PostAd() {
               )}
               <label className="mt-3 flex items-center justify-between">
                 <span className="text-[13px] font-medium">Price negotiable</span>
-                <Toggle checked={negotiable} onChange={setNegotiable} />
+                <Toggle checked={negotiable} onChange={setNegotiable} label="Price negotiable" />
               </label>
             </div>
 
@@ -451,7 +451,7 @@ export default function PostAd() {
                     Show buyers you can deliver within the city.
                   </p>
                 </div>
-                <Toggle checked={delivery} onChange={setDelivery} />
+                <Toggle checked={delivery} onChange={setDelivery} label="Offer delivery" />
               </div>
             </div>
 

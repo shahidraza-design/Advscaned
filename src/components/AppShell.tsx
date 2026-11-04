@@ -15,6 +15,7 @@ import {
   Sun,
   X,
   AlertTriangle,
+  WifiOff,
 } from 'lucide-react';
 import { useStore, useUI } from '../lib/store';
 import { cn, vibrate } from '../lib/utils';
@@ -155,6 +156,38 @@ function DesktopHeader() {
         </Link>
       </div>
     </header>
+  );
+}
+
+/* ------------------------------ Offline banner ---------------------------- */
+
+function ConnectionBanner() {
+  const [online, setOnline] = useState(
+    typeof navigator === 'undefined' ? true : navigator.onLine,
+  );
+
+  useEffect(() => {
+    const goOnline = () => {
+      setOnline(true);
+      useUI.getState().toast('Back online — syncing your ads', 'success');
+    };
+    const goOffline = () => setOnline(false);
+    window.addEventListener('online', goOnline);
+    window.addEventListener('offline', goOffline);
+    return () => {
+      window.removeEventListener('online', goOnline);
+      window.removeEventListener('offline', goOffline);
+    };
+  }, []);
+
+  if (online) return null;
+
+  return (
+    <div className="pointer-events-none fixed inset-x-0 bottom-[132px] z-[80] flex justify-center px-4 lg:bottom-6">
+      <div className="flex items-center gap-2 rounded-full bg-ink-900 px-3.5 py-2 text-[11.5px] font-semibold text-white shadow-float dark:bg-ink-700">
+        <WifiOff size={13} /> You're offline — saved ads are still available
+      </div>
+    </div>
   );
 }
 
@@ -305,6 +338,7 @@ export function AppShell() {
         <DesktopFooter />
       </div>
       <BottomNav />
+      <ConnectionBanner />
       <Toaster />
       <InstallBanner />
     </div>

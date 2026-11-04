@@ -12,8 +12,11 @@
     "android:init": "npm run build && cap add android",
     "android:sync": "npm run build && cap sync android",
     "android:apk": "cd android && ./gradlew assembleDebug",
-    "smoke": "node scripts/smoke.mjs",
-    "icons": "node scripts/make-icons.mjs"
+    "smoke": "npm run test:bundle && node scripts/smoke.mjs",
+    "icons": "node scripts/make-icons.mjs",
+    "flows": "npm run test:bundle && node scripts/flows.mjs",
+    "verify": "npm run typecheck && npm run smoke && npm run flows && npm run build",
+    "test:bundle": "esbuild src/main.tsx --bundle --outfile=.tmp/smoke.mjs --format=esm --define:process.env.NODE_ENV='\"development\"' --loader:.css=empty --log-level=error"
   },
   "dependencies": {
     "@capacitor/android": "^8.6.0",

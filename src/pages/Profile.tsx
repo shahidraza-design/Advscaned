@@ -139,7 +139,7 @@ export default function Profile() {
               <p className="text-[13.5px] font-semibold">Dark mode</p>
               <p className="text-[11px] text-muted">Easier on the eyes at night</p>
             </div>
-            <Toggle checked={theme === 'dark'} onChange={toggleTheme} />
+            <Toggle checked={theme === 'dark'} onChange={toggleTheme} label="Dark mode" />
           </div>
           <button onClick={() => setLocOpen(true)} className="flex w-full items-center gap-3 px-3.5 py-3 text-left">
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-ink-100 text-ink-600 dark:bg-white/10 dark:text-ink-200">

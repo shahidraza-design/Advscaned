@@ -62,7 +62,7 @@ async function main() {
   };
   window.navigator.vibrate = () => true;
 
-  for (const key of ['window', 'document', 'navigator', 'localStorage', 'HTMLElement', 'Node', 'Event', 'CustomEvent', 'requestAnimationFrame', 'cancelAnimationFrame', 'getComputedStyle', 'matchMedia', 'location']) {
+  for (const key of ['window', 'document', 'navigator', 'localStorage', 'HTMLElement', 'HTMLInputElement', 'HTMLTextAreaElement', 'SVGElement', 'Element', 'HTMLDivElement', 'DocumentFragment', 'Node', 'Event', 'MouseEvent', 'CustomEvent', 'requestAnimationFrame', 'cancelAnimationFrame', 'getComputedStyle', 'matchMedia', 'location']) {
     try {
       globalThis[key] = window[key];
     } catch {

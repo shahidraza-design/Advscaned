@@ -33,6 +33,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - **Home feed** with location-aware recommendations, category grid, featured rail, "fresh / near you / under ₹35k / top picks" tabs, trending searches and recent views.
 - **Search** with URL-shareable state: query, category, price range, condition, distance, verified-only, photo-only.
 - **Relevance ranking** that blends text match, freshness, locality, demand signals and promotions.
+- **Live search suggestions**: matching categories, real ad titles with prices, and popular searches as you type.
 - **Sorting**: recommended, newest, price asc/desc, nearest.
 - **Filter pills**, one-tap clearing, and a **save-this-search** action with alerts.
 - **Empty states**, skeleton-free instant filtering (data is local), and 4/3/2-column responsive grids.
@@ -63,7 +64,7 @@ App id `com.bazaar.marketplace`, generated launcher icons, splash colours and th
 - **Saved ads**, **saved searches** with alert toggles and live match counts.
 - **Notification centre** (price drops, replies, matches, boosts, system) with unread state.
 - **Dark mode**, area switcher, demo-data reset, safety centre.
-- **Install prompt** (beforeinstallprompt), offline service worker, PWA manifest with shortcuts.
+- **Install prompt** (beforeinstallprompt), offline service worker with an **offline banner** and reconnect toast, PWA manifest with shortcuts.
 
 ---
 
@@ -140,11 +141,17 @@ npm run dev         # Vite dev server on 0.0.0.0:5173
 npm run build       # type-check + production build → dist/
 npm run preview     # serve the production build (service worker active)
 npm run typecheck   # tsc --noEmit
-npm run smoke       # render every route in jsdom and assert no errors
+
+npm run smoke       # render 18 routes in jsdom (guest + signed-in), assert no errors
+npm run flows       # drive real UI flows: sign-in → post → boost → chat → filters → dark mode
+npm run verify      # typecheck + smoke + flows + build  ← the full gate
 npm run icons       # regenerate web + Android launcher icons
 ```
 
-The smoke test covers 18 routes in both guest and signed-in states — useful as a fast regression gate in CI.
+`npm run flows` is a genuine interaction suite — it types into controlled inputs, opens
+sheets, publishes an ad, waits for the seller's auto-reply, applies filters and toggles dark
+mode, asserting the resulting DOM. Both suites run on the real bundle, so they catch broken
+props, bad routes and runtime errors without a browser binary.
 
 ---
 

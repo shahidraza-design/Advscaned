@@ -1,5 +1,7 @@
 # Bazaar — Buy. Sell. Nearby.
 
+[![CI](https://github.com/shahidraza-design/Advscaned/actions/workflows/ci.yml/badge.svg)](https://github.com/shahidraza-design/Advscaned/actions/workflows/ci.yml)
+
 A complete, production-quality **OLX-class classifieds marketplace** built as an installable mobile web app (PWA) with a ready-to-build **Android APK** shell via Capacitor.
 
 Think OLX / Facebook Marketplace, but with a modern design system, an AI assist layer, and real marketplace mechanics: posting wizard, search with filters, in-app chat with offers, favourites, saved-search alerts, seller profiles, ad promotion and analytics.
@@ -9,21 +11,38 @@ Think OLX / Facebook Marketplace, but with a modern design system, an AI assist 
 
 ---
 
-## 1. Why a PWA instead of a raw `.apk`?
+## 1. Getting the APK
 
-This sandbox has no JDK/Android SDK, so an APK cannot be compiled here. Instead the app ships as a **fully installable PWA** (works offline, launches full-screen from the home screen) **plus a real Capacitor Android project** that produces an APK on a machine with Android Studio:
+The app ships three ways:
+
+**a. Installable PWA (zero setup)** — open the deployed URL on a phone → browser menu → _Add to Home screen_. Full-screen, offline-capable, launcher icon.
+
+**b. Prebuilt debug APK from CI (no local tooling)** — every push builds one on GitHub's runners:
+
+> **Actions → CI → latest run → Artifacts → `bazaar-debug-apk`**
+> → <https://github.com/shahidraza-design/Advscaned/actions/workflows/ci.yml>
+
+The artifact is a real signed-for-debug `app-debug.apk` (~9 MB) you can sideload on any Android 7+ device (enable “install unknown apps” first). Built with JDK 21 + Android SDK 36, `minSdkVersion 24`.
+
+**c. Build it yourself**
 
 ```bash
-npm install
-npm run build
-npx cap add android          # already done in this repo
-npx cap sync android
+npm install && npm run build
+npx cap sync android          # the android/ project is committed
 cd android && ./gradlew assembleDebug
 # → android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-Shortcuts: `npm run android:init`, `npm run android:sync`, `npm run android:apk`.
-App id `com.bazaar.marketplace`, generated launcher icons, splash colours and the app shell are all wired up.
+For a **release** APK/AAB you need a signing key and a `release` build type:
+
+```bash
+keytool -genkey -v -keystore bazaar.keystore -alias bazaar \
+  -keyalg RSA -keysize 2048 -validity 10000
+# then configure signingConfigs in android/app/build.gradle and run
+./gradlew bundleRelease     # Play Store AAB
+```
+
+App id `com.bazaar.marketplace`, launcher icons, splash colours and the WebView shell are already wired up.
 
 ---
 
@@ -151,7 +170,18 @@ scripts/
 
 ---
 
-## 6. Scripts
+## 6. CI
+
+`.github/workflows/ci.yml` runs two jobs on every push and pull request:
+
+| Job             | What it does                                                                                      |
+| --------------- | ------------------------------------------------------------------------------------------------- |
+| **Web checks**  | `npm ci` → `tsc` → 19-route smoke → 41 interaction flows → production build → uploads `web-build` |
+| **Android APK** | JDK 21 + Android SDK 36 → `cap sync` → `./gradlew assembleDebug` → uploads `bazaar-debug-apk`     |
+
+Both jobs currently pass in ~2 minutes.
+
+## 7. Scripts
 
 ```bash
 npm run dev         # Vite dev server on 0.0.0.0:5173
@@ -172,7 +202,7 @@ props, bad routes and runtime errors without a browser binary.
 
 ---
 
-## 7. Making it production-ready
+## 8. Making it production-ready
 
 The demo is intentionally backend-free. To ship for real:
 

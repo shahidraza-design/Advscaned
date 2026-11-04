@@ -5,8 +5,11 @@ dist-ssr
 .DS_Store
 .vite
 *.log
-android
 ios
+
+# Capacitor Android project IS committed so CI can build the APK.
+# Its own android/.gitignore already excludes build outputs, copied web assets
+# and generated config files.
 
 # scratch
 .tmp
